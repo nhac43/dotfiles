@@ -12,11 +12,13 @@ set hlsearch
 syntax on
 
 "vim 8.1 settings
-"delete key doesn't work on vim 8.1
-set backspace=indent,eol,start
-"terminal setting for vim 8.1
-set splitbelow
-set termwinsize=7x0
+if (v:version >= 810)
+	"delete key doesn't work on vim 8.1
+	set backspace=indent,eol,start
+	"terminal setting for vim 8.1
+	set splitbelow
+	set termwinsize=7x0
+endif
 
 "plugins
 call plug#begin()
