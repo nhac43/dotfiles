@@ -23,10 +23,21 @@ endif
 "plugins
 call plug#begin()
 Plug 'scrooloose/nerdtree'
+Plug 'vim-scripts/vim-auto-save'
 call plug#end()
 
 "NerdTree
 map <C-n> :NERDTreeToggle<CR>
-"Close NerdTree when file is closed
 "autocmd VimEnter *  NERDTree
+"Close NerdTree when file is closed
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+"auto save
+function! SwitchAutoSave()
+	if (g:auto_save == 0)
+		let g:auto_save = 1
+	else
+		let g:auto_save = 0
+	endif
+endfunction
+:command AS call SwitchAutoSave()
