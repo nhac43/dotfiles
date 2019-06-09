@@ -21,7 +21,7 @@ function! ToggleMouse()
     endif
 endfunction
 :command ToggleMouse call ToggleMouse()
-noremap <C-m> :ToggleMouse<CR>
+noremap <C-@> :ToggleMouse<CR>
 
 "vim 8.1 settings
 if (v:version >= 801)
@@ -63,7 +63,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/vim-auto-save'
 Plug 'vim-airline/vim-airline'
-Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -79,7 +79,7 @@ endif
 set background=dark
 
 "NerdTree
-map <C-n> :NERDTreeToggle<CR>
+noremap <C-n> :NERDTreeToggle<CR>
 "open a file with NerdTree
 "autocmd VimEnter *  NERDTree
 "Close NerdTree when file is closed
@@ -94,5 +94,11 @@ function! ToggleAutoSave()
     endif
 endfunction
 :command ToggleAutoSave call ToggleAutoSave()
-map <C-a> :ToggleAutoSave<CR>
+noremap <C-k> :ToggleAutoSave<CR>
 
+"indent guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=gray
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=gray
