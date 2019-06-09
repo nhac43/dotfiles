@@ -4,13 +4,24 @@ set encoding=UTF-8
 "basic setings
 set number
 set title
-"set cursorline
-set mouse=a
+set cursorline
 set expandtab
 set tabstop=4
 set shiftwidth=4
 set hlsearch
 syntax on
+
+"mouse setting
+set mouse=a
+function! ToggleMouse()
+    if &mouse == "a"
+        set mouse=
+    else
+        set mouse=a
+    endif
+endfunction
+:command ToggleMouse call ToggleMouse()
+noremap <C-m> :ToggleMouse<CR>
 
 "vim 8.1 settings
 if (v:version >= 801)
@@ -37,8 +48,17 @@ if !filereadable(vimplug_exists)
   autocmd VimEnter * PlugInstall
 endif
 
+" vim-plug check the specified plugin is installed
+function s:is_plugged(name)
+    if exists('g:plugs') && has_key(g:plugs, a:name) && isdirectory(g:plugs[a:name].dir)
+        return 1
+    else
+        return 0
+    endif
+endfunction
+
 "plugins
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/vim-auto-save'
@@ -53,7 +73,9 @@ Plug 'cocopon/iceberg.vim'
 call plug#end()
 
 "visual
-colorscheme hybrid
+if (s:is_plugged("vim-hybrid"))
+    colorscheme hybrid
+endif
 set background=dark
 
 "NerdTree
@@ -64,12 +86,13 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "auto save
-function! SwitchAutoSave()
+function! ToggleAutoSave()
     if (g:auto_save == 0)
         let g:auto_save = 1
     else
         let g:auto_save = 0
     endif
 endfunction
-:command AS call SwitchAutoSave()
+:command ToggleAutoSave call ToggleAutoSave()
+map <C-a> :ToggleAutoSave<CR>
 
