@@ -69,12 +69,13 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tomasr/molokai'
 Plug 'w0ng/vim-hybrid'
 Plug 'cocopon/iceberg.vim'
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 
 "visual
-if (s:is_plugged("vim-hybrid"))
-    colorscheme hybrid
+if (s:is_plugged("gruvbox"))
+    colorscheme gruvbox
 endif
 set background=dark
 
