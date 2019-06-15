@@ -63,7 +63,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/vim-auto-save'
 Plug 'vim-airline/vim-airline'
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -97,10 +97,6 @@ endfunction
 :command ToggleAutoSave call ToggleAutoSave()
 noremap <C-k> :ToggleAutoSave<CR>
 
-"indent guides
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_guide_size = 1
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=gray
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=gray
+"indentLine
+"fix bug to edit Tex file
+let g:indentLine_concealcursor="nc"
