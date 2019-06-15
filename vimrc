@@ -64,6 +64,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/vim-auto-save'
 Plug 'vim-airline/vim-airline'
 Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-gitgutter'
 
 "color scheme
 Plug 'tomasr/molokai'
