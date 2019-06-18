@@ -65,6 +65,8 @@ Plug 'vim-scripts/vim-auto-save'
 Plug 'vim-airline/vim-airline'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
+Plug 'tomtom/tcomment_vim'
+Plug 'rhysd/accelerated-jk'
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -101,3 +103,7 @@ noremap <C-k> :ToggleAutoSave<CR>
 "indentLine
 "fix bug to edit Tex file
 let g:indentLine_concealcursor="nc"
+
+"accelerate jk
+nmap j <Plug>(accelerated_jk_gj)
+nmap k <Plug>(accelerated_jk_gk)
