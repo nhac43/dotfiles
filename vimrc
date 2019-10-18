@@ -67,6 +67,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'tomtom/tcomment_vim'
 Plug 'rhysd/accelerated-jk'
+Plug 'chrisbra/csv.vim'
 
 "color scheme
 Plug 'tomasr/molokai'
