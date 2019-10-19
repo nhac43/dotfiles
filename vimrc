@@ -72,6 +72,8 @@ if (s:is_plugged("gruvbox"))
     colorscheme gruvbox
 endif
 set background=dark
+"for tmux
+set t_Co=256
 
 "NerdTree
 noremap <C-n> :NERDTreeToggle<CR>
