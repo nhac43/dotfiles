@@ -92,12 +92,5 @@ let g:indentLine_concealcursor="nc"
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
-"open csv file as table
-aug CSV_Editing
-		au!
-		au BufRead,BufWritePost *.csv :%ArrangeColumn
-		au BufWritePre *.csv :%UnArrangeColumn
-aug end
-
 "fzf key mapping
-noremap <C-@> :Files<CR>
+noremap <C-@> :GFiles<CR>
