@@ -31,6 +31,4 @@ function init() {
     setfzf
 }
 
-if [ $SHLVL = 1 ]; then
-  tmux
-fi
+tmux source-file ~/.tmux.conf
