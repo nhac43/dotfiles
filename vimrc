@@ -93,4 +93,5 @@ nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
 
 "fzf key mapping
-noremap <C-@> :GFiles<CR>
+noremap <C-@> :Files<CR>
+noremap <C-k> :GFiles<CR>
