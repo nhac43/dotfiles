@@ -6,6 +6,7 @@ if [ -d "$HOME/.pyenv" ]; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
 function setpyenv() {
     if [ ! -d "$HOME/.pyenv" ]; then
         git clone https://github.com/yyuu/pyenv.git ~/.pyenv
@@ -14,6 +15,20 @@ function setpyenv() {
     else
         echo "Already pyenv is set up."
     fi
+}
+
+function setfzf() {
+    if [ ! -d "$HOME/.fzf" ]; then
+        git clone https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
+    else
+        echo "Already fzf is set up."
+    fi
+}
+
+function init() {
+    setpyenv
+    setfzf
 }
 
 if [ $SHLVL = 1 ]; then
