@@ -9,19 +9,8 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set hlsearch
-syntax on
-
-"mouse setting
 set mouse=a
-function! ToggleMouse()
-    if &mouse == "a"
-        set mouse=
-    else
-        set mouse=a
-    endif
-endfunction
-:command ToggleMouse call ToggleMouse()
-noremap <C-@> :ToggleMouse<CR>
+syntax on
 
 "vim 8.1 settings
 if (v:version >= 801)
@@ -32,8 +21,10 @@ if (v:version >= 801)
     set termwinsize=7x0
 endif
 
-"Auto vim-plug install
-let vimplug_exists=expand('~/./autoload/plug.vim')
+"Install vim-plug and plugins
+let vimplug_exists=expand('~/.vim/autoload/plug.vim')
+
+let g:vim_bootstrap_editor = "vim"				" nvim or vim
 
 if !filereadable(vimplug_exists)
   if !executable("curl")
@@ -61,7 +52,6 @@ endfunction
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
-Plug 'vim-scripts/vim-auto-save'
 Plug 'vim-airline/vim-airline'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
@@ -90,17 +80,6 @@ noremap <C-n> :NERDTreeToggle<CR>
 "Close NerdTree when file is closed
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-"auto save
-function! ToggleAutoSave()
-    if (g:auto_save == 0)
-        let g:auto_save = 1
-    else
-        let g:auto_save = 0
-    endif
-endfunction
-:command ToggleAutoSave call ToggleAutoSave()
-noremap <C-k> :ToggleAutoSave<CR>
-
 "indentLine
 "fix bug to edit Tex file
 let g:indentLine_concealcursor="nc"
@@ -108,3 +87,9 @@ let g:indentLine_concealcursor="nc"
 "accelerate jk
 nmap j <Plug>(accelerated_jk_gj)
 nmap k <Plug>(accelerated_jk_gk)
+
+aug CSV_Editing
+		au!
+		au BufRead,BufWritePost *.csv :%ArrangeColumn
+		au BufWritePre *.csv :%UnArrangeColumn
+aug end
