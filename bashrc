@@ -30,5 +30,3 @@ function init() {
     setpyenv
     setfzf
 }
-
-tmux source-file ~/.tmux.conf
