@@ -24,3 +24,5 @@ tmux will be installed in $HOME/bin.
 ```
 $ export PATH=$HOME/bin:$PATH
 ```
+
+ref: [http://jhshi.me/2016/07/08/installing-tmux-from-source-non-root/index.html#.XbBQX5P7RQI](http://jhshi.me/2016/07/08/installing-tmux-from-source-non-root/index.html#.XbBQX5P7RQI)
