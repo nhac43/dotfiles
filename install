@@ -1,0 +1,11 @@
+#!/bin/bash
+DOTPATH="$HOME/dotfiles"
+
+cd $DOTPATH
+for f in .??*
+do
+    [[ "$f" == ".git" ]] && continue
+    [[ "$f" == ".DS_Store" ]] && continue
+
+    ln -s "$DOTPATH/$f" "$HOME/$f"
+done
