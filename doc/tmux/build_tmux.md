@@ -29,7 +29,7 @@ $ export PATH=$HOME/bin:$PATH
 - Currently, tmux2.5+ cannot display big images. Use tmux <= 2.4.
 - There are modified versions with better tmux support by [Eric Dobson](https://gitlab.com/gnachman/iterm2/issues/3898#note_14097715) and by [@krtx](https://gist.github.com/krtx/533d33d6cc49ecbbb8fab0ae871059ec)
 
-Raw modified version of imgcat are in `/bin`.
+Raw modified version of imgcat are in `dotfiles/doc/tmux/imgcat`.
 
 
 
