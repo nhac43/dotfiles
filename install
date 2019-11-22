@@ -9,3 +9,5 @@ do
 
     ln -s "$DOTPATH/$f" "$HOME/$f"
 done
+
+source $HOME/.bashrc
