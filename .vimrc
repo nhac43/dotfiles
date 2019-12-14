@@ -60,6 +60,8 @@ Plug 'rhysd/accelerated-jk'
 Plug 'chrisbra/csv.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
+Plug '907th/vim-auto-save'
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -99,3 +101,10 @@ noremap <C-k> :GFiles<CR>
 
 "csv
 noremap <C-@> :CSVTabularize<CR>
+
+"markdown
+let g:auto_save = 0
+augroup ft_markdown
+  au!
+  au FileType markdown let b:auto_save = 1
+augroup END
