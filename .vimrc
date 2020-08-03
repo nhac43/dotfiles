@@ -9,7 +9,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set hlsearch
-set mouse=a
+set mouse-=a
 syntax on
 
 "vim 8.1 settings
@@ -108,3 +108,6 @@ augroup ft_markdown
   au!
   au FileType markdown let b:auto_save = 1
 augroup END
+
+"high light
+nnoremap <ESC><ESC> :nohl<CR>
