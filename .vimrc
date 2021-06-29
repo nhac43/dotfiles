@@ -1,7 +1,8 @@
-"#Encoding
+"========================================================
+"                    Basic Settings
+"                     (w/o Plugins)
+"========================================================
 set encoding=UTF-8
-
-"basic setings
 set number
 set title
 set cursorline
@@ -9,10 +10,22 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set hlsearch
-set mouse-=a
 syntax on
 
-"vim 8.1 settings
+"for tmux
+set t_Co=256
+
+"indentLine
+"fix bug to edit Tex file
+let g:indentLine_concealcursor="nc"
+
+"high light
+nnoremap <ESC><ESC> :nohl<CR>
+
+
+"========================================================
+"                   Vim 8.1 Settings
+"========================================================
 if (v:version >= 801)
     "delete key doesn't work on vim 8.1
     set backspace=indent,eol,start
@@ -21,6 +34,10 @@ if (v:version >= 801)
     set termwinsize=7x0
 endif
 
+
+"========================================================
+"                   Install Vim-Plug
+"========================================================
 "Install vim-plug and plugins
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
@@ -48,7 +65,10 @@ function s:is_plugged(name)
     endif
 endfunction
 
-"plugins
+
+"========================================================
+"                       Plugins
+"========================================================
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
@@ -57,11 +77,9 @@ Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'tomtom/tcomment_vim'
 Plug 'rhysd/accelerated-jk'
-Plug 'chrisbra/csv.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
-Plug '907th/vim-auto-save'
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -71,25 +89,16 @@ Plug 'morhetz/gruvbox'
 
 call plug#end()
 
-"visual
-if (s:is_plugged("gruvbox"))
-    colorscheme gruvbox
-endif
-set background=dark
 
-"for tmux
-set t_Co=256
-
+"========================================================
+"             Advanved Settings of Plugins
+"========================================================
 "NerdTree
 noremap <C-n> :NERDTreeToggle<CR>
 "open a file with NerdTree
 "autocmd VimEnter *  NERDTree
 "Close NerdTree when file is closed
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"indentLine
-"fix bug to edit Tex file
-let g:indentLine_concealcursor="nc"
 
 "accelerate jk
 nmap j <Plug>(accelerated_jk_gj)
@@ -99,15 +108,14 @@ nmap k <Plug>(accelerated_jk_gk)
 noremap <C-j> :Files<CR>
 noremap <C-k> :GFiles<CR>
 
-"csv
-noremap <C-@> :CSVTabularize<CR>
 
-"markdown
-let g:auto_save = 0
-augroup ft_markdown
-  au!
-  au FileType markdown let b:auto_save = 1
-augroup END
+"========================================================
+"                   Visual Settings
+"========================================================
+if (s:is_plugged("gruvbox"))
+    colorscheme gruvbox
+else
+    colorscheme industry
+endif
+set background=dark
 
-"high light
-nnoremap <ESC><ESC> :nohl<CR>
