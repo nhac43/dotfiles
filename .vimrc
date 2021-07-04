@@ -10,6 +10,9 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set hlsearch
+set incsearch
+set ignorecase
+set smartcase
 syntax on
 
 "for tmux
@@ -21,6 +24,9 @@ let g:indentLine_concealcursor="nc"
 
 "high light
 nnoremap <ESC><ESC> :nohl<CR>
+
+" Terminal-Nomal mode
+tnoremap <Esc> <C-\><C-n>
 
 
 "========================================================
@@ -71,7 +77,7 @@ endfunction
 "========================================================
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
@@ -80,6 +86,17 @@ Plug 'rhysd/accelerated-jk'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Defx (filer)
+if has('nvim')
+  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/defx.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 "color scheme
 Plug 'tomasr/molokai'
@@ -94,11 +111,12 @@ call plug#end()
 "             Advanved Settings of Plugins
 "========================================================
 "NerdTree
-noremap <C-n> :NERDTreeToggle<CR>
+" noremap <C-n> :NERDTreeToggle<CR>
 "open a file with NerdTree
-"autocmd VimEnter *  NERDTree
+" autocmd VimEnter *  NERDTree
+
 "Close NerdTree when file is closed
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "accelerate jk
 nmap j <Plug>(accelerated_jk_gj)
@@ -119,3 +137,92 @@ else
 endif
 set background=dark
 
+
+"========================================================
+"                   Defx Key Settings
+"========================================================
+autocmd VimEnter * execute 'Defx'
+
+nnoremap <silent> <C-n> :<C-u> Defx <CR>
+
+autocmd FileType defx call s:defx_my_settings()
+	function! s:defx_my_settings() abort
+	  " Define mappings
+      nnoremap <silent><buffer><expr> <CR>
+      \ defx#is_directory() ?
+      \ defx#do_action('open_directory') :
+      \ defx#do_action('multi', ['drop', 'quit'])
+	  nnoremap <silent><buffer><expr> t
+	  \ defx#do_action('open', 'tabnew')
+	  nnoremap <silent><buffer><expr> c
+	  \ defx#do_action('copy')
+	  nnoremap <silent><buffer><expr> m
+	  \ defx#do_action('move')
+	  nnoremap <silent><buffer><expr> p
+	  \ defx#do_action('paste')
+      nnoremap <silent><buffer><expr> l 
+      \ defx#is_directory() ?
+      \ defx#do_action('open_directory') :
+      \ defx#do_action('multi', ['drop', 'quit'])
+	  nnoremap <silent><buffer><expr> E
+	  \ defx#do_action('drop', 'vsplit')
+	  nnoremap <silent><buffer><expr> P
+	  \ defx#do_action('preview')
+	  nnoremap <silent><buffer><expr> o
+	  \ defx#do_action('open_tree', 'toggle')
+	  nnoremap <silent><buffer><expr> K
+	  \ defx#do_action('new_directory')
+	  nnoremap <silent><buffer><expr> N
+	  \ defx#do_action('new_file')
+	  nnoremap <silent><buffer><expr> M
+	  \ defx#do_action('new_multiple_files')
+	  nnoremap <silent><buffer><expr> C
+	  \ defx#do_action('toggle_columns',
+	  \                'mark:indent:icon:filename:type:size:time')
+	  nnoremap <silent><buffer><expr> S
+	  \ defx#do_action('toggle_sort', 'time')
+	  nnoremap <silent><buffer><expr> d
+	  \ defx#do_action('remove')
+	  nnoremap <silent><buffer><expr> r
+	  \ defx#do_action('rename')
+	  nnoremap <silent><buffer><expr> !
+	  \ defx#do_action('execute_command')
+	  nnoremap <silent><buffer><expr> x
+	  \ defx#do_action('execute_system')
+	  nnoremap <silent><buffer><expr> yy
+	  \ defx#do_action('yank_path')
+	  nnoremap <silent><buffer><expr> .
+	  \ defx#do_action('toggle_ignored_files')
+	  nnoremap <silent><buffer><expr> ;
+	  \ defx#do_action('repeat')
+	  nnoremap <silent><buffer><expr> h
+	  \ defx#do_action('cd', ['..'])
+	  nnoremap <silent><buffer><expr> ~
+	  \ defx#do_action('cd')
+	  nnoremap <silent><buffer><expr> q
+	  \ defx#do_action('quit')
+      nnoremap <silent><buffer><expr> <Space>
+	  \ defx#do_action('toggle_select') . 'j'
+	  nnoremap <silent><buffer><expr> *
+	  \ defx#do_action('toggle_select_all')
+	  nnoremap <silent><buffer><expr> j
+	  \ line('.') == line('$') ? 'gg' : 'j'
+	  nnoremap <silent><buffer><expr> k
+	  \ line('.') == 1 ? 'G' : 'k'
+	  nnoremap <silent><buffer><expr> <C-l>
+	  \ defx#do_action('redraw')
+	  nnoremap <silent><buffer><expr> <C-g>
+	  \ defx#do_action('print')
+	  nnoremap <silent><buffer><expr> cd
+	  \ defx#do_action('change_vim_cwd')
+endfunction
+
+call defx#custom#option('_', {
+      \ 'winwidth': 40,
+      \ 'split': 'vertical',
+      \ 'direction': 'topleft',
+      \ 'show_ignored_files': 1,
+      \ 'buffer_name': 'exlorer',
+      \ 'toggle': 1,
+      \ 'resume': 1,
+      \ })
