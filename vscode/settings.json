@@ -1,0 +1,130 @@
+{
+    // ------------------------------------------------
+    //                    For Mac
+    // ------------------------------------------------
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/.rvm/**":true,
+        "**/node_modules/**": true,
+        "**/Library/**":true,
+        "**/GoogleDrive/**":true,
+        "**/Dropbox/**":true,
+        "**/.cocoapods/**":true,
+        "**/Pictures/**":true,
+    },
+
+    // ------------------------------------------------
+    //                Visual Settings
+    // ------------------------------------------------
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+
+    // ------------------------------------------------
+    //            Jupyter Notebook Settings 
+    // ------------------------------------------------
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+
+    // ------------------------------------------------
+    //                Basic Settings 
+    // ------------------------------------------------
+    "editor.minimap.enabled": false,
+    "editor.fontSize": 9,
+    "editor.wordWrap": "on",
+    "editor.insertSpaces": true, 
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false,
+    "workbench.tree.indent": 20,
+
+    // ------------------------------------------------
+    //                 Vim Settings 
+    // ------------------------------------------------
+    "vim.useSystemClipboard":true,
+    "vim.hlsearch": true,
+    // "vim.easymotion": true,
+    "vim.visualstar": true,
+    "vim.useCtrlKeys": true,
+    "vim.ignorecase": true,
+    "vim.smartcase": true,
+    "vim.incsearch": true,
+    "vim.leader" : "<space>",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "u"
+            ],
+            "commands": [
+                {
+                    "command": "undo"
+                }
+            ]
+        },
+        {
+            "before": [
+                "<C-r>"
+            ],
+            "commands": [
+                {
+                    "command": "redo"
+                }
+            ]
+        },
+        {
+            "before": [
+                "x"
+            ],
+            "after": [
+                "\"",
+                "_",
+                "x"
+            ]
+        },
+        {
+            "before": [
+                "s"
+            ],
+            "after": [
+                "\"",
+                "_",
+                "s"
+            ]
+        },
+        {
+            "before": [
+                "<Leader>",
+                "x"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "editor.action.formatDocument",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before": [
+                "<C-n>",
+            ],
+            "commands": [
+                {
+                    "command": "workbench.action.toggleSidebarVisibility"
+                },
+                {
+                    "command": "workbench.view.explorer"
+                }
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": ["p"],
+            "after": ["\"", "_", "d", "P"]
+        }
+    ],
+}
