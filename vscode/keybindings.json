@@ -32,6 +32,11 @@
         "command": "list.toggleKeyboardNavigation",
         "when": "listFocus && listSupportsKeyboardNavigation"
     },
+    {
+        "key": "ctrl+[",
+        "command": "extension.vim_escape",
+        "when": "editorTextFocus && vim.active && !inDebugRepl"
+    },
     // ------------------------------------------------
     //                Terminal Settings 
     // ------------------------------------------------
@@ -118,10 +123,5 @@
         "key": "ctrl+r",
         "command": "redo",
         "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
-    },
-    {
-        "key": "ctrl+[",
-        "command": "extension.vim_escape",
-        "when": "editorTextFocus && vim.active && !inDebugRepl"
     },
 ]
