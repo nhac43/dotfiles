@@ -131,4 +131,9 @@
         "command": "redo",
         "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
     },
+    {
+        "key": "ctrl+[",
+        "command": "list.clear",
+        "when": "filesExplorerFocus && listFocus && listHasSelectionOrFocus && !inputFocus"
+    },
 ]
