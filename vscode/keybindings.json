@@ -45,7 +45,7 @@
         "command": "workbench.action.terminal.toggleTerminal",
         // "when": "editorTextFocus"
         // "when": "editorFocus || inWelcome"
-        "when": "!listFocus && !terminalFocus"
+        "when": "!filesExplorerFocus && !terminalFocus"
     },
     {
         "key": "ctrl+t",
@@ -69,7 +69,7 @@
     {
         "key": "ctrl+-",
         "command": "workbench.action.focusFirstEditorGroup",
-        "when": "listFocus && !editorFocus"
+        "when": "filesExplorerFocus && !editorFocus"
     },
     {
         "key": "i",
