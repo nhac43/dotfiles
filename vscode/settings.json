@@ -107,19 +107,6 @@
                 }
             ]
         },
-        {
-            "before": [
-                "<C-n>",
-            ],
-            "commands": [
-                {
-                    "command": "workbench.action.toggleSidebarVisibility"
-                },
-                {
-                    "command": "workbench.view.explorer"
-                }
-            ]
-        }
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {
