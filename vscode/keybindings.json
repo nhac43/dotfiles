@@ -1,5 +1,8 @@
 // Place your key bindings in this file to override the defaults
 [
+    // ------------------------------------------------
+    //                Editor Settings 
+    // ------------------------------------------------
     {
         "key": "ctrl+h",
         "command": "workbench.action.previousEditor",
@@ -20,16 +23,6 @@
         "command": "workbench.action.quickOpen",
     },
     {
-        "key": "ctrl+t",
-        "command": "workbench.action.terminal.toggleTerminal",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+t",
-        "command": "workbench.action.focusActiveEditorGroup",
-        "when": "terminalFocus"
-    },
-    {
         "key": "ctrl+[",
         "command": "workbench.action.closeQuickOpen",
         "when": "inQuickOpen ",
@@ -39,11 +32,27 @@
         "command": "list.toggleKeyboardNavigation",
         "when": "listFocus && listSupportsKeyboardNavigation"
     },
+    // ------------------------------------------------
+    //                Terminal Settings 
+    // ------------------------------------------------
     {
-        "key": "ctrl+n",
+        "key": "ctrl+t",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "terminalFocus"
+    },
+    // ------------------------------------------------
+    //                Sidebar Settings 
+    // ------------------------------------------------
+    {
+        "key": "ctrl+-",
         "command": "workbench.action.focusSideBar",
         "when": "vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
-        // "when": "!explorerviewletvisible && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+    //     "when": "!explorerviewletvisible && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     },
     // {
     //     "key": "ctrl+n",
@@ -51,7 +60,7 @@
     //     "when": "explorerViewletVisible && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     // },
     {
-        "key": "ctrl+n",
+        "key": "ctrl+-",
         "command": "workbench.action.focusFirstEditorGroup",
         "when": "listFocus && !editorFocus"
     },
@@ -96,7 +105,7 @@
         "when": "explorerResourceCut && explorerViewletVisible && filesExplorerFocus && !inputFocus"
     },
     {
-        "key": "shift+d shift+d",
+        "key": "x",
         "command": "moveFileToTrash",
         "when": "explorerResourceMoveableToTrash && explorerViewletVisible && filesExplorerFocus && !explorerResourceReadonly && !inputFocus"
     },
