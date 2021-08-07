@@ -43,7 +43,9 @@
     {
         "key": "ctrl+t",
         "command": "workbench.action.terminal.toggleTerminal",
-        "when": "editorTextFocus"
+        // "when": "editorTextFocus"
+        // "when": "editorFocus || inWelcome"
+        "when": "!listFocus && !terminalFocus"
     },
     {
         "key": "ctrl+t",
@@ -82,12 +84,12 @@
     {
         "key": "o",
         "command": "explorer.newFile",
-        "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
     },
     {
         "key": "shift+o",
         "command": "explorer.newFolder",
-        "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !inputFocus"
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
     },
     {
         "key": "y y",
