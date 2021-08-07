@@ -72,6 +72,11 @@
         "when": "filesExplorerFocus && !editorFocus"
     },
     {
+        "key": "ctrl+[",
+        "command": "workbench.action.focusSideBar",
+        "when": "filesExplorerFocus && !editorFocus"
+    },
+    {
         "key": "i",
         "command": "renameFile",
         "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
