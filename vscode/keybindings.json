@@ -37,6 +37,14 @@
         "command": "extension.vim_escape",
         "when": "editorTextFocus && vim.active && !inDebugRepl"
     },
+    {
+        "key": "ctrl+=",
+        "command": "editor.action.fontZoomIn"
+    },
+    {
+        "key": "ctrl+-",
+        "command": "editor.action.fontZoomOut"
+    },
     // ------------------------------------------------
     //                Terminal Settings 
     // ------------------------------------------------
@@ -52,11 +60,21 @@
         "command": "workbench.action.focusActiveEditorGroup",
         "when": "terminalFocus"
     },
+    {
+        "key": "ctrl+=",
+        "command": "workbench.action.terminal.resizePaneUp",
+        "when": "terminalFocus && terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+-",
+        "command": "workbench.action.terminal.resizePaneDown",
+        "when": "terminalFocus && terminalProcessSupported"
+    },
     // ------------------------------------------------
     //                Sidebar Settings 
     // ------------------------------------------------
     {
-        "key": "ctrl+-",
+        "key": "ctrl+s",
         "command": "workbench.action.focusSideBar",
         "when": "vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     //     "when": "!explorerviewletvisible && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
@@ -67,7 +85,7 @@
     //     "when": "explorerViewletVisible && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     // },
     {
-        "key": "ctrl+-",
+        "key": "ctrl+s",
         "command": "workbench.action.focusFirstEditorGroup",
         "when": "filesExplorerFocus && !editorFocus"
     },
