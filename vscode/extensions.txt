@@ -1,6 +1,8 @@
 bierner.markdown-preview-github-styles
+christian-kohler.path-intellisense
 jdinhlife.gruvbox
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
+njpwerner.autodocstring
 vscodevim.vim
