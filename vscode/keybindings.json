@@ -69,6 +69,26 @@
         "command": "workbench.action.terminal.resizePaneDown",
         "when": "terminalFocus && terminalProcessSupported"
     },
+    {
+        "key": "ctrl+b c",
+        "command": "workbench.action.terminal.new",
+        "when": "terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+b d",
+        "command": "workbench.action.terminal.kill",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+b n",
+        "command": "workbench.action.terminal.focusNext",
+        "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+    },
+    {
+        "key": "ctrl+b p",
+        "command": "workbench.action.terminal.focusPrevious",
+        "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+    },
     // ------------------------------------------------
     //                Sidebar Settings 
     // ------------------------------------------------
