@@ -107,20 +107,6 @@
                 }
             ]
         },
-        {
-            "before": [
-                "<Leader>",
-                "g",
-                "i",
-                "t",
-            ],
-            "after": [],
-            "commands": [
-                {
-                   "command": "workbench.view.scm",
-                }
-            ]
-        },
     ],
     "vim.visualModeKeyBindingsNonRecursive": [
         {
