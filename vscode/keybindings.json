@@ -46,6 +46,18 @@
         "key": "ctrl+-",
         "command": "editor.action.fontZoomOut"
     },
+    {
+        "key": "ctrl+p",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "cmd+p",
+        "command": "-workbench.action.quickOpen"
+    },
     // ------------------------------------------------
     //                Terminal Settings 
     // ------------------------------------------------
@@ -70,22 +82,22 @@
         "when": "terminalFocus && terminalProcessSupported"
     },
     {
-        "key": "ctrl+b c",
+        "key": "ctrl+q c",
         "command": "workbench.action.terminal.new",
         "when": "terminalProcessSupported"
     },
     {
-        "key": "ctrl+b d",
+        "key": "ctrl+q d",
         "command": "workbench.action.terminal.kill",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+b n",
+        "key": "ctrl+q n",
         "command": "workbench.action.terminal.focusNext",
         "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
     },
     {
-        "key": "ctrl+b p",
+        "key": "ctrl+q p",
         "command": "workbench.action.terminal.focusPrevious",
         "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
     },
