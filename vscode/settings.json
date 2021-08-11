@@ -42,6 +42,7 @@
     "window.zoomLevel": 2,
     "editor.fontSize": 9,
     "terminal.integrated.fontSize": 12,
+    "explorer.compactFolders": false,
 
     // ------------------------------------------------
     //                 Vim Settings 
