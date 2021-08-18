@@ -62,12 +62,12 @@
     //                Terminal Settings 
     // ------------------------------------------------
     {
-        "key": "ctrl+t",
+        "key": "ctrl+s o",
         "command": "workbench.action.terminal.toggleTerminal",
         "when": "!sideBarFocus && !terminalFocus"
     },
     {
-        "key": "ctrl+t",
+        "key": "ctrl+s o",
         "command": "workbench.action.focusActiveEditorGroup",
         "when": "terminalFocus"
     },
@@ -105,12 +105,12 @@
     //                Sidebar Settings 
     // ------------------------------------------------
     {
-        "key": "ctrl+s",
+        "key": "ctrl+t",
         "command": "workbench.view.explorer",
         "when": "vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
     },
     {
-        "key": "ctrl+s",
+        "key": "ctrl+t",
         "command": "workbench.action.focusFirstEditorGroup",
         "when": "sideBarFocus && !editorFocus"
     },

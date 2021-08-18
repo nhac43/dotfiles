@@ -22,11 +22,20 @@ set t_Co=256
 "fix bug to edit Tex file
 let g:indentLine_concealcursor="nc"
 
+
+"========================================================
+"                    My Key Bindings
+"========================================================
 "high light
 nnoremap <ESC><ESC> :nohl<CR>
 
 " Terminal-Nomal mode
 tnoremap <Esc> <C-\><C-n>
+
+" Tabs
+nnoremap <C-l> gt
+nnoremap <C-h> gT
+nnoremap <C-k> :q<CR>
 
 
 "========================================================
@@ -87,6 +96,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Defx (filer)
@@ -124,7 +134,7 @@ nmap k <Plug>(accelerated_jk_gk)
 
 "fzf
 noremap <C-j> :Files<CR>
-noremap <C-k> :GFiles<CR>
+" noremap <C-k> :GFiles<CR>
 
 
 "========================================================
@@ -141,9 +151,9 @@ set background=dark
 "========================================================
 "                   Defx Key Settings
 "========================================================
-autocmd VimEnter * execute 'Defx'
+" autocmd VimEnter * execute 'Defx'
 
-nnoremap <silent> <C-n> :<C-u> Defx <CR>
+nnoremap <silent> <C-t> :<C-u> Defx <CR>
 
 autocmd FileType defx call s:defx_my_settings()
 function! s:defx_my_settings() abort
@@ -151,28 +161,34 @@ function! s:defx_my_settings() abort
     nnoremap <silent><buffer><expr> <CR>
                 \ defx#is_directory() ?
                 \ defx#do_action('open_directory') :
-                \ defx#do_action('multi', ['drop', 'quit'])
-    nnoremap <silent><buffer><expr> t
-                \ defx#do_action('open', 'tabnew')
-    nnoremap <silent><buffer><expr> c
+                \ defx#do_action('multi', ['quit', ['open', 'tab drop']])
+                " \ defx#do_action('multi', ['drop', 'quit'])
+    " nnoremap <silent><buffer><expr> t
+    "             \ defx#do_action('open', 'tabnew')
+    " nnoremap <silent><buffer><expr> c
+    nnoremap <silent><buffer><expr> yy
                 \ defx#do_action('copy')
-    nnoremap <silent><buffer><expr> m
+    " nnoremap <silent><buffer><expr> m
+    nnoremap <silent><buffer><expr> dd
                 \ defx#do_action('move')
     nnoremap <silent><buffer><expr> p
                 \ defx#do_action('paste')
     nnoremap <silent><buffer><expr> l 
                 \ defx#is_directory() ?
                 \ defx#do_action('open_directory') :
-                \ defx#do_action('multi', ['drop', 'quit'])
+                \ defx#do_action('multi', ['quit', ['open', 'tab drop']])
+                " \ defx#do_action('multi', ['drop', 'quit'])
     nnoremap <silent><buffer><expr> E
                 \ defx#do_action('drop', 'vsplit')
     nnoremap <silent><buffer><expr> P
                 \ defx#do_action('preview')
-    nnoremap <silent><buffer><expr> o
-                \ defx#do_action('open_tree', 'toggle')
-    nnoremap <silent><buffer><expr> K
+    " nnoremap <silent><buffer><expr> o
+    "             \ defx#do_action('open_tree', 'toggle')
+    " nnoremap <silent><buffer><expr> K
+    nnoremap <silent><buffer><expr> O
                 \ defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> N
+    " nnoremap <silent><buffer><expr> N
+    nnoremap <silent><buffer><expr> o
                 \ defx#do_action('new_file')
     nnoremap <silent><buffer><expr> M
                 \ defx#do_action('new_multiple_files')
@@ -181,16 +197,18 @@ function! s:defx_my_settings() abort
                 \                'mark:indent:icon:filename:type:size:time')
     nnoremap <silent><buffer><expr> S
                 \ defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d
+    " nnoremap <silent><buffer><expr> d
+    nnoremap <silent><buffer><expr> x
                 \ defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r
+    " nnoremap <silent><buffer><expr> r
+    nnoremap <silent><buffer><expr> i
                 \ defx#do_action('rename')
     nnoremap <silent><buffer><expr> !
                 \ defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> x
-                \ defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy
-                \ defx#do_action('yank_path')
+    " nnoremap <silent><buffer><expr> x
+    "             \ defx#do_action('execute_system')
+    " nnoremap <silent><buffer><expr> yy
+    "             \ defx#do_action('yank_path')
     nnoremap <silent><buffer><expr> .
                 \ defx#do_action('toggle_ignored_files')
     nnoremap <silent><buffer><expr> ;
@@ -209,8 +227,8 @@ function! s:defx_my_settings() abort
                 \ line('.') == line('$') ? 'gg' : 'j'
     nnoremap <silent><buffer><expr> k
                 \ line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l>
-                \ defx#do_action('redraw')
+    " nnoremap <silent><buffer><expr> <C-l>
+    "             \ defx#do_action('redraw')
     nnoremap <silent><buffer><expr> <C-g>
                 \ defx#do_action('print')
     nnoremap <silent><buffer><expr> cd
@@ -219,7 +237,7 @@ endfunction
 
 call defx#custom#option('_', {
             \ 'winwidth': 40,
-            \ 'split': 'vertical',
+            \ 'split': 'no',
             \ 'direction': 'topleft',
             \ 'show_ignored_files': 1,
             \ 'buffer_name': 'exlorer',
