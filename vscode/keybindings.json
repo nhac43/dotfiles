@@ -82,22 +82,22 @@
         "when": "terminalFocus && terminalProcessSupported"
     },
     {
-        "key": "ctrl+q c",
+        "key": "ctrl+s c",
         "command": "workbench.action.terminal.new",
         "when": "terminalProcessSupported"
     },
     {
-        "key": "ctrl+q d",
+        "key": "ctrl+s x",
         "command": "workbench.action.terminal.kill",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+q n",
+        "key": "ctrl+s n",
         "command": "workbench.action.terminal.focusNext",
         "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
     },
     {
-        "key": "ctrl+q p",
+        "key": "ctrl+s p",
         "command": "workbench.action.terminal.focusPrevious",
         "when": "terminalFocus && terminalProcessSupported && !terminalEditorFocus"
     },
