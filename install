@@ -4,7 +4,7 @@ if [ $# = 0 ]; then
     echo Usage: 
     echo \$sh dotfiles/install [path to rc file like \"~/.bashrc\"]
     echo Installation is failed.
-    exit
+    return
 fi
 
 echo export DOTFILES=$HOME/dotfiles >> $1
