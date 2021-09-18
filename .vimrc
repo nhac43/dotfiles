@@ -14,6 +14,7 @@ set incsearch
 set ignorecase
 set smartcase
 syntax on
+let mapleader = " "
 
 "for tmux
 set t_Co=256
@@ -28,6 +29,9 @@ let g:indentLine_concealcursor="nc"
 "========================================================
 "high light
 nnoremap <ESC><ESC> :nohl<CR>
+
+" for jupyter
+nnoremap <Leader>h /# %%<CR>
 
 " Terminal-Nomal mode
 tnoremap <Esc> <C-\><C-n>
