@@ -27,6 +27,13 @@ let g:indentLine_concealcursor="nc"
 "========================================================
 "                    My Key Bindings
 "========================================================
+let g:python3_host_prog='/Users/nakata.h/.venv-for-vim/bin/python'
+let g:python_host_prog='/Users/nakata.h/.venv-for-vim/bin/python'
+
+
+"========================================================
+"                    My Key Bindings
+"========================================================
 "high light
 nnoremap <ESC><ESC> :nohl<CR>
 
