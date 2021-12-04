@@ -3,5 +3,6 @@
 export VIMRC=$DOTFILES/.vimrc
 export XSHRC=$DOTFILES/.xshrc
 export TMUXCONF=$DOTFILES/.tmux.conf
+export DOTTOOLS=$DOTFILES/tools
 
-source $DOTFILES/.tools/loader.sh
+source $DOTTOOLS/loader.sh

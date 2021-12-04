@@ -4,11 +4,11 @@ if [ $# = 0 ]; then
     echo Usage: 
     echo \$sh dotfiles/install [path to rc file like \"~/.bashrc\"]
     echo Installation is failed.
-    return
+    exit
 fi
 
-echo export DOTFILES=$HOME/dotfiles >> $1
-echo source $DOTFILES/.xshrc >> $1
+echo 'export DOTFILES=$HOME/dotfiles' >> $1
+echo 'source $DOTFILES/.xshrc' >> $1
 source $1
 
 ln -s $VIMRC ~/
