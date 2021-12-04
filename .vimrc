@@ -27,8 +27,8 @@ let g:indentLine_concealcursor="nc"
 "========================================================
 "                    My Key Bindings
 "========================================================
-let g:python3_host_prog='/Users/nakata.h/.venv-for-vim/bin/python'
-let g:python_host_prog='/Users/nakata.h/.venv-for-vim/bin/python'
+let g:python3_host_prog='$HOME/.venv-for-vim/bin/python'
+let g:python_host_prog='$HOME/.venv-for-vim/bin/python'
 
 
 "========================================================
@@ -109,6 +109,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sirver/ultisnips'
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
@@ -430,3 +431,16 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+
+"========================================================
+"                  UltiSnips Settings
+"========================================================
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
+" - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"

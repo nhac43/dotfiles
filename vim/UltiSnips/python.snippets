@@ -1,0 +1,25 @@
+snippet class "create base class"
+class ${1:{Name}}(${2:{Base}}):
+
+	def __init__(self${3:{Arguments}}):
+		${4:{Initialize}}
+endsnippet
+
+snippet def "create base function"
+def ${1:{Name}}(${2:{Arguments}}):
+	${3:{Implementation}}
+endsnippet
+
+snippet defc "create base method"
+def ${1:{Name}}(self${2:{Arguments}}):
+	${3:{Implementation}}
+endsnippet
+
+snippet main "create base main function"
+def main():
+	${1:{Implementation}}
+
+
+if __name__ == "__init__":
+	main()
+endsnippet

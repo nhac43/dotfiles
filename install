@@ -13,3 +13,4 @@ source $1
 
 ln -s $VIMRC ~/
 ln -s $TMUXCONF ~/
+ln -s $DOTFILES/vim/UltiSnips ~/.vim/
