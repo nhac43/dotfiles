@@ -110,6 +110,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sirver/ultisnips'
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
@@ -444,3 +445,10 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+
+"========================================================
+"                  Pydocstring Settings
+"========================================================
+" let g:pydocstring_formatter = 'numpy'
+let g:pydocstring_formatter = 'sphinx'
