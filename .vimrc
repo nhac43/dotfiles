@@ -111,6 +111,7 @@ Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sirver/ultisnips'
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
+Plug 'cohama/lexima.vim'
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
@@ -451,4 +452,7 @@ let g:UltiSnipsEditSplit="vertical"
 "                  Pydocstring Settings
 "========================================================
 " let g:pydocstring_formatter = 'numpy'
-let g:pydocstring_formatter = 'sphinx'
+let g:pydocstring_formatter = 'google'
+" let g:pydocstring_formatter = 'sphinx'
+
+let g:pydocstring_enable_mapping = 0

@@ -1,23 +1,23 @@
 snippet class "create base class"
-class ${1:{Name}}(${2:{Base}}):
+class ${1:}(${2:}):
 
-	def __init__(self${3:{Arguments}}):
-		${4:{Initialize}}
+	def __init__(self${3:}):
+		${4:}}
 endsnippet
 
 snippet def "create base function"
-def ${1:{Name}}(${2:{Arguments}}):
-	${3:{Implementation}}
+def ${1:}(${2:}):
+	${3:}
 endsnippet
 
 snippet defs "create base method"
-def ${1:{Name}}(self${2:{Arguments}}):
-	${3:{Implementation}}
+def ${1:}(self${2:}):
+	${3:}
 endsnippet
 
 snippet main "create base main function"
 def main():
-	${1:{Implementation}}
+	${1:}
 
 
 if __name__ == "__main__":
@@ -27,10 +27,10 @@ endsnippet
 snippet pars "create base argparser format"
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--', type=int, default=0)
-parser.add_argument('--', action='store_true')
-parser.add_argument('--', default=str, choices=[])
-parser.add_argument('--', nargs='*')
+parser.add_argument('--arg', type=str, default='')
+parser.add_argument('--flag', action='store_true')
+parser.add_argument('--choices', default=str, choices=[])
+parser.add_argument('--multi', nargs='*')
 
 args = parser.parse_args()
 endsnippet
