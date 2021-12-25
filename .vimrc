@@ -456,3 +456,9 @@ let g:pydocstring_formatter = 'google'
 " let g:pydocstring_formatter = 'sphinx'
 
 let g:pydocstring_enable_mapping = 0
+
+
+"========================================================
+"                  UltiSnips Settings
+"========================================================
+let g:ultisnips_python_style = 'google'
