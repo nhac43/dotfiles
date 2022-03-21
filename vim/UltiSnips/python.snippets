@@ -33,4 +33,98 @@ parser.add_argument('--choices', default=str, choices=[])
 parser.add_argument('--multi', nargs='*')
 
 args = parser.parse_args()
+
+endsnippet
+
+snippet seed "create set_seed function"
+def seed_everything(seed=42):
+	random.seed(seed)
+	os.environ['PYTHONHASHSEED'] = str(seed)
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed(seed)
+	torch.backends.cudnn.deterministic = True
+
+endsnippet
+
+snippet importst "import ml libraries"
+import os
+import gc
+import re
+import argparse
+import shutil
+import ast
+import sys
+import copy
+import json
+import time
+import math
+import string
+import pickle
+import random
+import joblib
+import itertools
+import warnings
+warnings.filterwarnings("ignore")
+from collection import defaultdict
+
+endsnippet
+
+snippet importds "import data science libraries"
+import scipy as sp
+import numpy as np
+import pandas as pd
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+from tqdm.auto import tqdm
+from sklearn.metics import classification_report
+from sklearn.model_selection import StratifiedKFold, GroupKFold, KFold
+
+endsnippet
+
+snippet importtorch "import torch libraries"
+import torch
+import torch.nn as nn
+from torch.nn import Parameter
+import torch.nn.functional as F
+from torch.optim import Adam, SGD, AdamW
+from torch.utils.data import DataLoader, Dataset
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+endsnippet
+
+snippet importhf "import hugging face libraries"
+import tokenizers
+import transformers
+print(f"tokenizers.__version__: {tokenizers.__version__}")
+print(f"transformers.__version__: {transformers.__version__}")
+from transformers import AutoTokenizer, AutoModel, AutoConfig
+from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
+os.environ["TOKENIZERS_PARALLELISM"] = True
+
+endsnippet
+
+snippet === "create title block"
+# ==================================================
+# ${1:}
+# ==================================================
+endsnippet
+
+snippet gfold "create group K fold"
+kf = GroupKFold(n_splits=cfg.n_fold)
+groups = ${1:}
+for n, (train_index, val_index) in enumerate(kf.split(train, ${2:}, groups)):
+	train.loc[val_index, 'fold'] = int(n)
+train['fold'] = train['fold'].astype(int)
+display(train.groupby('fold').size())
+endsnippet
+
+snippet sfold "create stratified K fold"
+kf = StratifiedKFold(n_splits=cfg.n_fold, random_state=cfg.seed)
+for n, (train_index, val_index) in enumerate(kf.split(train, ${1:})):
+	train.loc[val_index, 'fold'] = int(n)
+train['fold'] = train['fold'].astype(int)
+display(train.groupby('fold').size())
 endsnippet
