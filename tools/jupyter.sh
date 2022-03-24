@@ -13,3 +13,10 @@ function js() {
         jupytext --set-formats ipynb,py:percent $1
     fi
 } 
+
+alias jc='python ${DOTFILES}/jupyter/create-notebook.py'
+
+function jcs() {
+    jc $1
+    js ${1}.ipynb
+}
