@@ -69,7 +69,7 @@ import joblib
 import itertools
 import warnings
 warnings.filterwarnings("ignore")
-from collection import defaultdict
+from collections import defaultdict
 
 endsnippet
 
@@ -81,7 +81,7 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 from tqdm.auto import tqdm
-from sklearn.metics import classification_report
+from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold, GroupKFold, KFold
 
 endsnippet
@@ -105,7 +105,7 @@ print(f"tokenizers.__version__: {tokenizers.__version__}")
 print(f"transformers.__version__: {transformers.__version__}")
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
-os.environ["TOKENIZERS_PARALLELISM"] = True
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 endsnippet
 
@@ -125,7 +125,7 @@ display(train.groupby('fold').size())
 endsnippet
 
 snippet sfold "create stratified K fold"
-kf = StratifiedKFold(n_splits=cfg.n_fold, random_state=cfg.seed)
+kf = StratifiedKFold(n_splits=cfg.n_fold, random_state=cfg.seed, shuffle=True)
 for n, (train_index, val_index) in enumerate(kf.split(train, ${1:})):
 	train.loc[val_index, 'fold'] = int(n)
 train['fold'] = train['fold'].astype(int)
@@ -186,7 +186,7 @@ class CustomModel(nn.Module):
 		if pretrained:
 			self.model = AutoModel.from_pretrained(cfg.model, config=self.config)
 		else:
-			self.model = AutoModel(self.config)
+			self.model = AutoModel.from_config(self.config)
 		self.fc_dropout = nn.Dropout(cfg.fc_dropout)
 		self.fc = nn.Linear(self.config.hidden_size, 1)
 		self._init_weights(self.fc)
@@ -245,7 +245,7 @@ class AverageMeter(object):
 		self.val = val
 		self.sum += val * n
 		self.count += n
-		self.avg = self.sum / self.
+		self.avg = self.sum / self.count
 endsnippet
 
 snippet timeutils "create time utils function"
@@ -277,8 +277,7 @@ def train_fn(fold, train_loader, model, criterion, optimizer, epoch, scheduler, 
 		batch_size = labels.size(0)
 		with torch.cuda.amp.autocast(enabled=cfg.apex):
 			y_preds = model(inputs)
-		loss = criterion(y_preds.view(-1, 1), labels.view(-1, 1))
-		loss = torch.masked_select(loss, labels.view(-1, 1) != -1).mean()
+		loss = criterion(y_preds, labels)
 		if cfg.gradient_accumulation_steps > 1:
 			loss = loss / cfg.gradient_accumulation_steps
 		losses.update(loss.item(), batch_size)
@@ -320,8 +319,7 @@ def valid_fn(valid_loader, model, criterion, device):
 		batch_size = labels.size(0)
 		with torch.no_grad():
 			y_preds = model(inputs)
-		loss = criterion(y_preds.view(-1, 1), labels.view(-1, 1))
-		loss = torch.masked_select(loss, labels.view(-1, 1) != -1).mean()
+		loss = criterion(y_preds, labels)
 		if cfg.gradient_accumulation_steps > 1:
 			loss = loss / cfg.gradient_accumulation_steps
 		losses.update(loss.item(), batch_size)
@@ -337,6 +335,22 @@ def valid_fn(valid_loader, model, criterion, device):
 						remain=timeSince(start, float(step+1)/len(valid_loader))))
 	predictions = np.concatenate(preds)
 	return losses.avg, predictions
+endsnippet
+
+snippet inferencetorch " create base inference function for torch"
+def inference_fn(test_loader, model, device):
+	preds = []
+	model.eval()
+	model.to(device)
+	tk0 = tqdm(test_loader, total=len(test_loader))
+	for inputs in tk0:
+		for k, v in inputs.items():
+			inputs[k] = v.to(device)
+		with torch.no_grad():
+			y_preds = model(inputs)
+		preds.append(y_preds.to('cpu').numpy())
+	predictions = np.concatenate(preds)
+	return predictions
 endsnippet
 
 snippet looptorch "create base train loop for torch"
@@ -408,7 +422,8 @@ def train_loop(cfg, folds, fold, output_dir):
 	# ==================================================
 	# loop
 	# ==================================================
-	criterion = nn.BCEWithLogitsLoss(reduction="none")
+	# criterion = nn.BCEWithLogitsLoss()
+	criterion = nn.CrossEntropyLoss()
 
 	best_score = 0.
 
@@ -421,7 +436,7 @@ def train_loop(cfg, folds, fold, output_dir):
 
 		# eval
 		avg_val_loss, predictions = valid_fn(valid_loader, model, criterion, device)
-		predictions = predictions.reshape((len(valid_df), cfg.max_len))
+		# predictions = predictions.reshape((len(valid_df), cfg.num_classes))
 
 		# scoring
 		# IMPLEMENT ME
@@ -441,7 +456,7 @@ def train_loop(cfg, folds, fold, output_dir):
 
 	predictions = torch.load(output_dir+f"{cfg.model.replace('/', '-')}_fold{fold}_best.pth", 
 			map_location=torch.device('cpu'))['predictions']
-	valid_df[[i for i in range(cfg.max_len)]] = predictions
+	# valid_df[[i for i in range(cfg.num_classes)]] = predictions
 
 	torch.cuda.empty_cache()
 	gc.collect()
@@ -450,17 +465,17 @@ def train_loop(cfg, folds, fold, output_dir):
 endsnippet
 
 snippet runfolds "create folds block"
-oof_df = pd.dataframe()
+oof_df = pd.DataFrame()
 for fold in range(cfg.n_fold):
 	if fold in cfg.trn_fold:
-		_oof_df = train_loop(train, fold)
+		_oof_df = train_loop(cfg, train, fold, output_dir)
 		oof_df = pd.concat([oof_df, _oof_df])
 		LOGGER.info(f"========== fold: {fold} result ==========")
 		# get_result(_oof_df)
 oof_df = oof_df.reset_index(drop=True)
 LOGGER.info(f"========== CV ==========")
 # get_result(oof_df)
-oof_df.to_pickle(OUTPUT_DIR+'oof_df.pkl')
+oof_df.to_pickle(output_dir+'oof_df.pkl')
 endsnippet
 
 snippet cc "create cell for jupyter notebook"
