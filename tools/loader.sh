@@ -5,3 +5,4 @@ source $DOTTOOLS/fzf.sh
 source $DOTTOOLS/venv.sh
 source $DOTTOOLS/tmux.sh
 source $DOTTOOLS/jupyter.sh
+source $DOTTOOLS/clipboard.sh
