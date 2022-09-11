@@ -14,4 +14,13 @@ function js() {
     fi
 } 
 
-alias jc='python ${DOTFILES}/jupyter/create-notebook.py'
+function jc() {
+    if [ $# = 0 ]; then
+        echo Usage: 
+        echo "\$jc [notebook name]"
+        echo Jupytext create is failed.
+        return
+    fi
+    python ${DOTFILES}/jupyter/create-notebook.py $1
+    js $1.ipynb
+} 
