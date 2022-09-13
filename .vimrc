@@ -48,6 +48,22 @@ nnoremap <C-l> gt
 nnoremap <C-h> gT
 nnoremap <C-k> :q<CR>
 
+" Copy mode toggle: Hide left column and indent line
+let s:copy_mode = 0
+function! CopyModeToggle()
+    if s:copy_mode
+        set nu
+        set signcolumn=yes
+        let s:copy_mode = 0
+    else
+        set nonu
+        set signcolumn=no
+        let s:copy_mode = 1
+    endif
+    IndentLinesToggle
+endfunction
+nnoremap <Leader>l :call CopyModeToggle()<CR>
+
 
 "========================================================
 "                   Vim 8.1 Settings
@@ -112,6 +128,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sirver/ultisnips'
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 Plug 'cohama/lexima.vim'
+Plug 'puremourning/vimspector'
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
