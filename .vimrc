@@ -129,6 +129,7 @@ Plug 'sirver/ultisnips'
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 Plug 'cohama/lexima.vim'
 Plug 'puremourning/vimspector'
+Plug '907th/vim-auto-save'
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
 "     \ 'do': 'bash install.sh',
@@ -170,6 +171,14 @@ nmap k <Plug>(accelerated_jk_gk)
 "fzf
 noremap <C-j> :Files<CR>
 " noremap <C-k> :GFiles<CR>
+
+" Auto save
+let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:auto_save = 0
+augroup ft_markdown
+  au!
+  au FileType markdown let b:auto_save = 1
+augroup END
 
 
 "========================================================
