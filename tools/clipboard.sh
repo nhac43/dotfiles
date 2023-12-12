@@ -8,3 +8,5 @@ function cb() {
         echo not supported
     fi
 }
+
+alias cwd="pwd | cb"
