@@ -11,6 +11,10 @@ echo 'export DOTFILES=$HOME/dotfiles' >> $1
 echo 'source $DOTFILES/.xshrc' >> $1
 source $1
 
-ln -s $VIMRC ~/
-ln -s $TMUXCONF ~/
-ln -s $DOTFILES/vim/UltiSnips ~/.vim/
+mkdir -p ~/.config/nvim
+
+ln -s $VIMRC ~/.vimrc
+ln -s $TMUXCONF ~/.tmux.conf
+# ln -s $DOTFILES/vim/UltiSnips ~/.vim/
+ln -s $DOTFILES/vim/UltiSnips ~/.config/nvim/
+ln -s $DOTFILES/nvim/init.vim ~/.config/nvim/
