@@ -1,0 +1,483 @@
+snippet class "create base class"
+class ${1:}(${2:}):
+
+	def __init__(self${3:}):
+		${4:}
+endsnippet
+
+snippet def "create base function"
+def ${1:}(${2:}):
+	${3:}
+endsnippet
+
+snippet defs "create base method"
+def ${1:}(self${2:}):
+	${3:}
+endsnippet
+
+snippet main "create base main function"
+def main():
+	${1:}
+
+
+if __name__ == "__main__":
+	main()
+endsnippet
+
+snippet pars "create base argparser format"
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--arg', type=str, default='')
+parser.add_argument('--flag', action='store_true')
+parser.add_argument('--choices', default=str, choices=[])
+parser.add_argument('--multi', nargs='*')
+
+args = parser.parse_args()
+
+endsnippet
+
+# ref: https://www.kaggle.com/code/yasufuminakama/nbme-deberta-base-baseline-train
+
+snippet seed "create seed function"
+def seed_everything(seed=42):
+	random.seed(seed)
+	os.environ['PYTHONHASHSEED'] = str(seed)
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed(seed)
+	torch.backends.cudnn.deterministic = True
+
+endsnippet
+
+snippet importst "import ml libraries"
+import os
+import gc
+import re
+import glob
+import argparse
+import shutil
+import ast
+import sys
+import copy
+import json
+import time
+import math
+import string
+import pickle
+import random
+import itertools
+import warnings
+warnings.filterwarnings("ignore")
+from collections import defaultdict
+
+endsnippet
+
+snippet importds "import data science libraries"
+import scipy as sp
+import numpy as np
+import pandas as pd
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+from tqdm.auto import tqdm
+from sklearn.metrics import classification_report
+from sklearn.model_selection import StratifiedKFold, GroupKFold, KFold
+
+endsnippet
+
+snippet importtorch "import torch libraries"
+import torch
+import torch.nn as nn
+from torch.nn import Parameter
+import torch.nn.functional as F
+from torch.optim import Adam, SGD, AdamW
+from torch.utils.data import DataLoader, Dataset
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+endsnippet
+
+snippet importhf "import hugging face libraries"
+import tokenizers
+import transformers
+print(f"tokenizers.__version__: {tokenizers.__version__}")
+print(f"transformers.__version__: {transformers.__version__}")
+from transformers import AutoTokenizer, AutoModel, AutoConfig
+from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
+
+endsnippet
+
+snippet === "create title block"
+# ==================================================
+# ${1:}
+# ==================================================
+endsnippet
+
+snippet gfold "create group K fold"
+kf = GroupKFold(n_splits=cfg.n_fold)
+groups = ${1:}
+for n, (train_index, val_index) in enumerate(kf.split(train, ${2:}, groups)):
+	train.loc[val_index, 'fold'] = int(n)
+train['fold'] = train['fold'].astype(int)
+display(train.groupby('fold').size())
+endsnippet
+
+snippet sfold "create stratified K fold"
+kf = StratifiedKFold(n_splits=cfg.n_fold, random_state=cfg.seed, shuffle=True)
+for n, (train_index, val_index) in enumerate(kf.split(train, ${1:})):
+	train.loc[val_index, 'fold'] = int(n)
+train['fold'] = train['fold'].astype(int)
+display(train.groupby('fold').size())
+endsnippet
+
+snippet confighf "create base config for hf"
+class CFG:
+	apex=True
+	print_freq=100
+	num_workers=4
+	model="microsoft/deberta-base"
+	scheduler='cosine' # ['linear', 'cosine']
+	batch_scheduler=True
+	num_cycles=0.5
+	num_warmup_steps=0
+	epochs=5
+	encoder_lr=2e-5
+	decoder_lr=2e-5
+	min_lr=1e-6
+	eps=1e-6
+	betas=(0.9, 0.999)
+	batch_size=12
+	fc_dropout=0.2
+	max_len=512
+	weight_decay=0.01
+	gradient_accumulation_steps=1
+	max_grad_norm=1000
+	seed=42
+	n_fold=5
+	trn_fold=[0, 1, 2, 3, 4]
+	train=True
+endsnippet
+
+snippet logger "create logger getter"
+def get_logger(filename='train'):
+	from logging import getLogger, INFO, StreamHandler, FileHandler, Formatter
+	logger = getLogger(__name__)
+	logger.setLevel(INFO)
+	handler1 = StreamHandler()
+	handler1.setFormatter(Formatter("%(message)s"))
+	handler2 = FileHandler(filename=f"{filename}.log")
+	handler2.setFormatter(Formatter("%(message)s"))
+	logger.addHandler(handler1)
+	logger.addHandler(handler2)
+	return logger
+endsnippet
+
+snippet modelhf "create base model for transformers"
+class CustomModel(nn.Module):
+	def __init__(self, cfg, config_path=None, pretrained=False):
+		super().__init__()
+		self.cfg = cfg
+		if config_path is None:
+			self.config = AutoConfig.from_pretrained(cfg.model, output_hidden_states=True)
+		else:
+			self.config = torch.load(config_path)
+		if pretrained:
+			self.model = AutoModel.from_pretrained(cfg.model, config=self.config)
+		else:
+			self.model = AutoModel.from_config(self.config)
+		self.fc_dropout = nn.Dropout(cfg.fc_dropout)
+		self.fc = nn.Linear(self.config.hidden_size, 1)
+		self._init_weights(self.fc)
+		
+	def _init_weights(self, module):
+		if isinstance(module, nn.Linear):
+			module.weight.data.normal_(mean=0.0, std=self.config.initializer_range)
+			if module.bias is not None:
+				module.bias.data.zero_()
+		elif isinstance(module, nn.Embedding):
+			module.weight.data.normal_(mean=0.0, std=self.config.initializer_range)
+			if module.padding_idx is not None:
+				module.weight.data[module.padding_idx].zero_()
+		elif isinstance(module, nn.LayerNorm):
+			module.bias.data.zero_()
+			module.weight.data.fill_(1.0)
+		
+	def feature(self, inputs):
+		outputs = self.model(**inputs)
+		last_hidden_states = outputs[0]
+		return last_hidden_states
+
+	def forward(self, inputs):
+		feature = self.feature(inputs)
+		output = self.fc(self.fc_dropout(feature))
+		return output
+endsnippet
+
+snippet datasettorch "create base torch dataset class"
+class CustomDataset(Dataset):
+	def __init__(self, cfg, df):
+		self.cfg = cfg
+		self.df = df
+
+	def __len__(self):
+		pass
+
+	def __getitem__(self, item):
+		# return inputs, label
+		pass
+endsnippet
+
+snippet averagemeter "create AverageMeter class"
+class AverageMeter(object):
+	"""Computes and stores the average and current value"""
+	def __init__(self):
+		self.reset()
+
+	def reset(self):
+		self.val = 0
+		self.avg = 0
+		self.sum = 0
+		self.count = 0
+
+	def update(self, val, n=1):
+		self.val = val
+		self.sum += val * n
+		self.count += n
+		self.avg = self.sum / self.count
+endsnippet
+
+snippet timeutils "create time utils function"
+def asMinutes(s):
+	m = math.floor(s / 60)
+	s -= m * 60
+	return '%dm %ds' % (m, s)
+
+
+def timeSince(since, percent):
+	now = time.time()
+	s = now - since
+	es = s / (percent)
+	rs = es - s
+	return '%s (remain %s)' % (asMinutes(s), asMinutes(rs))
+endsnippet
+
+snippet traintorch "create base train function for torch"
+def train_fn(fold, train_loader, model, criterion, optimizer, epoch, scheduler, device):
+	model.train()
+	scaler = torch.cuda.amp.GradScaler(enabled=cfg.apex)
+	losses = AverageMeter()
+	start = end = time.time()
+	global_step = 0
+	for step, (inputs, labels) in enumerate(train_loader):
+		for k, v in inputs.items():
+			inputs[k] = v.to(device)
+		labels = labels.to(device)
+		batch_size = labels.size(0)
+		with torch.cuda.amp.autocast(enabled=cfg.apex):
+			y_preds = model(inputs)
+		loss = criterion(y_preds, labels)
+		if cfg.gradient_accumulation_steps > 1:
+			loss = loss / cfg.gradient_accumulation_steps
+		losses.update(loss.item(), batch_size)
+		scaler.scale(loss).backward()
+		grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.max_grad_norm)
+		if (step + 1) % cfg.gradient_accumulation_steps == 0:
+			scaler.step(optimizer)
+			scaler.update()
+			optimizer.zero_grad()
+			global_step += 1
+			if cfg.batch_scheduler:
+				scheduler.step()
+		end = time.time()
+		if step % cfg.print_freq == 0 or step == (len(train_loader)-1):
+			print(
+				'Epoch: [{0}][{1}/{2}] '
+				'Elapsed {remain:s} '
+				'Loss: {loss.val:.4f}({loss.avg:.4f}) '
+				'Grad: {grad_norm:.4f}  '
+				'LR: {lr:.8f}  '
+				.format(epoch+1, step, len(train_loader), 
+					remain=timeSince(start, float(step+1)/len(train_loader)),
+					loss=losses,
+					grad_norm=grad_norm,
+					lr=scheduler.get_lr()[0]))
+	return losses.avg
+endsnippet
+
+snippet validtorch "create base valid function for torch"
+def valid_fn(valid_loader, model, criterion, device):
+	losses = AverageMeter()
+	model.eval()
+	preds = []
+	start = end = time.time()
+	for step, (inputs, labels) in enumerate(valid_loader):
+		for k, v in inputs.items():
+			inputs[k] = v.to(device)
+		labels = labels.to(device)
+		batch_size = labels.size(0)
+		with torch.no_grad():
+			y_preds = model(inputs)
+		loss = criterion(y_preds, labels)
+		if cfg.gradient_accumulation_steps > 1:
+			loss = loss / cfg.gradient_accumulation_steps
+		losses.update(loss.item(), batch_size)
+		preds.append(y_preds.sigmoid().to('cpu').numpy())
+		end = time.time()
+		if step % cfg.print_freq == 0 or step == (len(valid_loader)-1):
+			print(
+				'EVAL: [{0}/{1}] '
+				'Elapsed {remain:s} '
+				'Loss: {loss.val:.4f}({loss.avg:.4f}) '
+				.format(step, len(valid_loader),
+						loss=losses,
+						remain=timeSince(start, float(step+1)/len(valid_loader))))
+	predictions = np.concatenate(preds)
+	return losses.avg, predictions
+endsnippet
+
+snippet inferencetorch " create base inference function for torch"
+def inference_fn(test_loader, model, device):
+	preds = []
+	model.eval()
+	model.to(device)
+	tk0 = tqdm(test_loader, total=len(test_loader))
+	for inputs in tk0:
+		for k, v in inputs.items():
+			inputs[k] = v.to(device)
+		with torch.no_grad():
+			y_preds = model(inputs)
+		preds.append(y_preds.to('cpu').numpy())
+	predictions = np.concatenate(preds)
+	return predictions
+endsnippet
+
+snippet looptorch "create base train loop for torch"
+def train_loop(cfg, folds, fold, output_dir):
+
+	LOGGER.info(f"========== fold: {fold} training ==========")
+
+	# ==================================================
+	# loader
+	# ==================================================
+	train_df = folds[folds['fold'] != fold].reset_index(drop=True)
+	valid_df = folds[folds['fold'] == fold].reset_index(drop=True)
+
+	train_dataset = CustomDataset(cfg, train_df)
+	valid_dataset = CustomDataset(cfg, valid_df)
+
+	train_loader = DataLoader(train_dataset,
+							batch_size=cfg.batch_size,
+							shuffle=True,
+							num_workers=cfg.num_workers, pin_memory=True, drop_last=True)
+	valid_loader = DataLoader(valid_dataset,
+							batch_size=cfg.batch_size,
+							shuffle=False,
+							num_workers=cfg.num_workers, pin_memory=True, drop_last=False)
+
+	# ==================================================
+	# model & optimizer
+	# ==================================================
+	model = CustomModel(cfg, config_path=None, pretrained=True)
+	torch.save(model.config, output_dir+'config.pth')
+	model.to(device)
+
+	def get_optimizer_params(model, encoder_lr, decoder_lr, weight_decay=0.0):
+		param_optimizer = list(model.named_parameters())
+		no_decay = ["bias", "LayerNorm.bias", "LayerNorm.weight"]
+		optimizer_parameters = [
+{'params': [p for n, p in model.model.named_parameters() if not any(nd in n for nd in no_decay)],
+	'lr': encoder_lr, 'weight_decay': weight_decay},
+{'params': [p for n, p in model.model.named_parameters() if any(nd in n for nd in no_decay)],
+	'lr': encoder_lr, 'weight_decay': 0.0},
+{'params': [p for n, p in model.named_parameters() if "model" not in n],
+	'lr': decoder_lr, 'weight_decay': 0.0}
+		]
+		return optimizer_parameters
+
+	optimizer_parameters = get_optimizer_params(model,
+			encoder_lr=cfg.encoder_lr, 
+			decoder_lr=cfg.decoder_lr,
+			weight_decay=cfg.weight_decay)
+	optimizer = AdamW(optimizer_parameters, lr=cfg.encoder_lr, eps=cfg.eps, betas=cfg.betas)
+
+	# ==================================================
+	# scheduler
+	# ==================================================
+	def get_scheduler(cfg, optimizer, num_train_steps):
+		if cfg.scheduler=='linear':
+			scheduler = get_linear_schedule_with_warmup(
+					optimizer, num_warmup_steps=cfg.num_warmup_steps, num_training_steps=num_train_steps
+					)
+		elif cfg.scheduler=='cosine':
+			scheduler = get_cosine_schedule_with_warmup(
+					optimizer, num_warmup_steps=cfg.num_warmup_steps, num_training_steps=num_train_steps, num_cycles=cfg.num_cycles
+					)
+		return scheduler
+
+	num_train_steps = int(len(train_df) / cfg.batch_size * cfg.epochs)
+	scheduler = get_scheduler(cfg, optimizer, num_train_steps)
+
+	# ==================================================
+	# loop
+	# ==================================================
+	# criterion = nn.BCEWithLogitsLoss()
+	criterion = nn.CrossEntropyLoss()
+
+	best_score = 0.
+
+	for epoch in range(cfg.epochs):
+
+		start_time = time.time()
+
+		# train
+		avg_loss = train_fn(fold, train_loader, model, criterion, optimizer, epoch, scheduler, device)
+
+		# eval
+		avg_val_loss, predictions = valid_fn(valid_loader, model, criterion, device)
+		# predictions = predictions.reshape((len(valid_df), cfg.num_classes))
+
+		# scoring
+		# IMPLEMENT ME
+		# score = get_score(valid_labels, preds)
+
+		elapsed = time.time() - start_time
+
+		LOGGER.info(f'Epoch {epoch+1} - avg_train_loss: {avg_loss:.4f}  avg_val_loss: {avg_val_loss:.4f}  time: {elapsed:.0f}s')
+		LOGGER.info(f'Epoch {epoch+1} - Score: {score:.4f}')
+
+		if best_score < score:
+			best_score = score
+			LOGGER.info(f'Epoch {epoch+1} - Save Best Score: {best_score:.4f} Model')
+			torch.save({'model': model.state_dict(),
+					'predictions': predictions},
+					output_dir+f"{cfg.model.replace('/', '-')}_fold{fold}_best.pth")
+
+	predictions = torch.load(output_dir+f"{cfg.model.replace('/', '-')}_fold{fold}_best.pth", 
+			map_location=torch.device('cpu'))['predictions']
+	# valid_df[[i for i in range(cfg.num_classes)]] = predictions
+
+	torch.cuda.empty_cache()
+	gc.collect()
+
+	return valid_df
+endsnippet
+
+snippet runfolds "create folds block"
+oof_df = pd.DataFrame()
+for fold in range(cfg.n_fold):
+	if fold in cfg.trn_fold:
+		_oof_df = train_loop(cfg, train, fold, output_dir)
+		oof_df = pd.concat([oof_df, _oof_df])
+		LOGGER.info(f"========== fold: {fold} result ==========")
+		# get_result(_oof_df)
+oof_df = oof_df.reset_index(drop=True)
+LOGGER.info(f"========== CV ==========")
+# get_result(oof_df)
+oof_df.to_pickle(output_dir+'oof_df.pkl')
+endsnippet
+
+snippet cc "create cell for jupyter notebook"
+# %%
+
+endsnippet

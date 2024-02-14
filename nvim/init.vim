@@ -124,6 +124,7 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind.nvim'
+Plug 'nvimtools/none-ls.nvim'
 
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -219,8 +220,10 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+
 "========================================================
 "                     Lua Settings
 "========================================================
 lua require("lsp_config")
 lua require("nvim_cmp_config")
+lua require("keymaps")
