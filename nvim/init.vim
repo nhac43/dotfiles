@@ -15,6 +15,7 @@ set ignorecase
 set smartcase
 syntax on
 let mapleader = " "
+set relativenumber
 
 "for tmux
 set t_Co=256
