@@ -120,6 +120,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'nvim-lua/plenary.nvim'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
+Plug 'kkoomen/vim-doge'
 
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
@@ -206,11 +207,13 @@ let g:ultisnips_python_style = 'google'
 "========================================================
 "                  Pydocstring Settings
 "========================================================
-" let g:pydocstring_formatter = 'numpy'
-let g:pydocstring_formatter = 'google'
-" let g:pydocstring_formatter = 'sphinx'
+" " let g:pydocstring_formatter = 'numpy'
+" let g:pydocstring_formatter = 'google'
+" " let g:pydocstring_formatter = 'sphinx'
 
-let g:pydocstring_enable_mapping = 0
+" let g:pydocstring_enable_mapping = 0
+
+let g:doge_doc_standard_python = 'google'
 
 "========================================================
 "                   Telescope Settings
@@ -228,3 +231,4 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 lua require("lsp_config")
 lua require("nvim_cmp_config")
 lua require("keymaps")
+lua require("doge")
