@@ -12,7 +12,10 @@ cat_reverse() {
 cd() {
     if [ -z "$1" ] || [ "$1" = "-" ]; then
         # target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
-        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
+        # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
+        # 最後の行はカレントディレクトリなため除く
+        # 重複を除いた後にパスを展開、展開後の重複を再度除く
+        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | awk '!seen[$0]++' | expand_path | awk '!seen[$0]++' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
@@ -39,4 +42,26 @@ cd() {
     else
         builtin cd $1
     fi
+}
+
+expand_path(){
+    # 標準入力から1行ずつ読み取る
+    while IFS= read -r path; do
+        # パスが空であればスキップ
+        if [[ -z "$path" ]]; then
+            continue
+        fi
+
+        # パスを '/' で分割して配列に格納
+        IFS='/' read -ra ADDR <<< "$path"
+        
+        # 配列を逆順にして展開して表示
+        # for ((i=${#ADDR[@]}; i>=1; i--)); do
+        for ((i=${#ADDR[@]}; i>=2; i--)); do
+            echo "${ADDR[@]:0:i}" | tr ' ' '/'
+        done
+        if [ ! -z "${ADDR[0]}" ]; then
+            echo ${ADDR[0]}
+        fi
+    done
 }
