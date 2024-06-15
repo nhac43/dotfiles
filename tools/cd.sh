@@ -1,5 +1,12 @@
+if [[ "$(uname)" == 'Darwin' ]]; then
+    IS_OSX=1
+else
+    IS_OSX=0
+fi
+
 cat_reverse() {
-    if which tac >/dev/null 2>&1; then
+    # if which tac >/dev/null 2>&1; then
+    if [ ! -n "$IS_OSX" ]; then
         tac $1
     else
         tail -r $1
@@ -15,12 +22,15 @@ expand_path(){
         fi
 
         # パスを '/' で分割して配列に格納
-        IFS='/' read -ra ADDR <<< "$path"
+        if [ ! -n "$IS_OSX" ]; then
+            IFS='/' read -ra ADDR <<< "$path"
+        else
+            IFS='/' read -rA ADDR <<< "$path"
+        fi
         
         # 配列を逆順にして展開して表示
-        # for ((i=${#ADDR[@]}; i>=1; i--)); do
         for ((i=${#ADDR[@]}; i>=2; i--)); do
-            echo "${ADDR[@]:0:i}" | tr ' ' '/'
+            echo "${ADDR[@]:0:$i}" | tr ' ' '/'
         done
         if [ ! -z "${ADDR[0]}" ]; then
             echo ${ADDR[0]}
@@ -36,10 +46,10 @@ cd_fzf() {
 
     if [ -z "$1" ] || [ "$1" = "-" ]; then
         # target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
-        # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
+        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
         # 最後の行はカレントディレクトリなため除く
         # 重複を除いた後にパスを展開、展開後の重複を再度除く
-        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | awk '!seen[$0]++' | expand_path | awk '!seen[$0]++' | fzf)
+        # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | awk '!seen[$0]++' | expand_path | awk '!seen[$0]++' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
@@ -55,7 +65,12 @@ cd_fzf() {
         elif [ "$(tail -n 1 "$CD_HISTORY_PATH")" != "$target_path" ]; then
             # 既存のパスが含まれている場合は削除
             if grep -qFx "$target_path" "$CD_HISTORY_PATH"; then
-                sed -i "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+                if [ ! -n "$IS_OSX" ]; then
+                    sed -i "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+                else
+                    # BSD sed
+                    sed -i "" "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+                fi
             fi
             echo "$target_path" >> "$CD_HISTORY_PATH"
         fi
