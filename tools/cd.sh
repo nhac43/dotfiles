@@ -46,10 +46,10 @@ cd_fzf() {
 
     if [ -z "$1" ] || [ "$1" = "-" ]; then
         # target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
-        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
+        # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
         # 最後の行はカレントディレクトリなため除く
         # 重複を除いた後にパスを展開、展開後の重複を再度除く
-        # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | awk '!seen[$0]++' | expand_path | awk '!seen[$0]++' | fzf)
+        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | awk '!seen[$0]++' | expand_path | awk '!seen[$0]++' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
