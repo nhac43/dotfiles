@@ -1,7 +1,7 @@
 export CD_HISTORY_LIMIT=100
 cd() {
     if [ -z "$1" ] || [ "$1" = "-" ]; then
-        target_path=$(tac $HOME/.cd_history | sed '1d' | fzf)
+        target_path=$(tail -r $HOME/.cd_history | sed '1d' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
