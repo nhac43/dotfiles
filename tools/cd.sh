@@ -53,7 +53,8 @@ cd_fzf() {
         # i+1...j 直前のパスの展開パス(直前のパスを除く)
         # j+1... その他の履歴
         # ===============================================
-        target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | expand_path | sed '1d' | { tail -n 2 $CD_HISTORY_PATH | head -n 1; cat -; } | awk '!seen[$0]++' | fzf)
+        # target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | expand_path | sed '1d' | { tail -n 2 $CD_HISTORY_PATH | head -n 1; cat -; } | awk '!seen[$0]++' | fzf)
+        target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | sed '1d' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
@@ -67,16 +68,61 @@ cd_fzf() {
         if [ ! -f "$CD_HISTORY_PATH" ]; then
             echo "$target_path" >> "$CD_HISTORY_PATH"
         elif [ "$(tail -n 1 "$CD_HISTORY_PATH")" != "$target_path" ]; then
+
+            last_dir=$(tail -n 1 "$CD_HISTORY_PATH")
+            if [[ ! $IS_OSX -eq 1 ]]; then
+                sed -i -e '$d' "$CD_HISTORY_PATH"
+            else
+                sed -i '' -e '$d' "$CD_HISTORY_PATH"
+            fi
+
+            # パスを '/' で分割して配列に格納
+            if [[ ! $IS_OSX -eq 1 ]]; then
+                IFS='/' read -ra ADDR <<< "$target_path"
+            else
+                IFS='/' read -rA ADDR <<< "$target_path"
+            fi
+
+            # 配列を逆順にして展開して表示
+            # if [ ! -z "${ADDR[0]}" ]; then
+            #     new_line=${ADDR[0]}
+            #     # 既存のパスが含まれている場合は削除
+            #     if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
+            #         if [[ ! $IS_OSX -eq 1 ]]; then
+            #             sed -i "\|^$new_line\$|d" "$CD_HISTORY_PATH"
+            #         else
+            #             # BSD sed
+            #             sed -i "" "\|^$new_line\$|d" "$CD_HISTORY_PATH"
+            #         fi
+            #     fi
+            #     echo "$new_line" >> "$CD_HISTORY_PATH"
+            # fi
+            for ((i=2; i<${#ADDR[@]}; i++)); do
+                new_line=$(echo "${ADDR[@]:0:$i}" | tr ' ' '/')
+                # 既存のパスが含まれている場合は削除
+                if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
+                    if [[ ! $IS_OSX -eq 1 ]]; then
+                        sed -i "\|^$new_line\$|d" "$CD_HISTORY_PATH"
+                    else
+                        # BSD sed
+                        sed -i "" "\|^$new_line\$|d" "$CD_HISTORY_PATH"
+                    fi
+                fi
+                echo "$new_line" >> "$CD_HISTORY_PATH"
+            done
+            echo "$last_dir" >> "$CD_HISTORY_PATH"
+            new_line=$(echo "${ADDR[@]:-1}" | tr ' ' '/')
             # 既存のパスが含まれている場合は削除
-            if grep -qFx "$target_path" "$CD_HISTORY_PATH"; then
+            if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
                 if [[ ! $IS_OSX -eq 1 ]]; then
-                    sed -i "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+                    sed -i "\|^$new_line\$|d" "$CD_HISTORY_PATH"
                 else
                     # BSD sed
-                    sed -i "" "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+                    sed -i "" "\|^$new_line\$|d" "$CD_HISTORY_PATH"
                 fi
             fi
-            echo "$target_path" >> "$CD_HISTORY_PATH"
+            echo "$new_line" >> "$CD_HISTORY_PATH"
+
         fi
         if [ -n "$CD_HISTORY_LIMIT" ]; then
             current_lines=$(wc -l < "$CD_HISTORY_PATH")
