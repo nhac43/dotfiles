@@ -53,6 +53,10 @@ cd_fzf() {
         if [ ! -f "$CD_HISTORY_PATH" ]; then
             echo "$target_path" >> "$CD_HISTORY_PATH"
         elif [ "$(tail -n 1 "$CD_HISTORY_PATH")" != "$target_path" ]; then
+            # 既存のパスが含まれている場合は削除
+            if grep -qFx "$target_path" "$CD_HISTORY_PATH"; then
+                sed -i "\|^$target_path\$|d" "$CD_HISTORY_PATH"
+            fi
             echo "$target_path" >> "$CD_HISTORY_PATH"
         fi
         if [ -n "$CD_HISTORY_LIMIT" ]; then
