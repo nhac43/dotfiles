@@ -15,17 +15,17 @@ cat_reverse() {
 
 expand_path(){
     # 標準入力から1行ずつ読み取る
-    while IFS= read -r path; do
+    while IFS= read -r line; do
         # パスが空であればスキップ
-        if [[ -z "$path" ]]; then
+        if [[ -z "$line" ]]; then
             continue
         fi
 
         # パスを '/' で分割して配列に格納
         if [[ ! $IS_OSX -eq 1 ]]; then
-            IFS='/' read -ra ADDR <<< "$path"
+            IFS='/' read -ra ADDR <<< "$line"
         else
-            IFS='/' read -rA ADDR <<< "$path"
+            IFS='/' read -rA ADDR <<< "$line"
         fi
         
         # 配列を逆順にして展開して表示
