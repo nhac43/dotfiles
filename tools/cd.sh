@@ -6,7 +6,7 @@ fi
 
 cat_reverse() {
     # if which tac >/dev/null 2>&1; then
-    if [ ! -n "$IS_OSX" ]; then
+    if [[ ! $IS_OSX -eq 1 ]]; then
         tac $1
     else
         tail -r $1
@@ -22,7 +22,7 @@ expand_path(){
         fi
 
         # パスを '/' で分割して配列に格納
-        if [ ! -n "$IS_OSX" ]; then
+        if [[ ! $IS_OSX -eq 1 ]]; then
             IFS='/' read -ra ADDR <<< "$path"
         else
             IFS='/' read -rA ADDR <<< "$path"
@@ -65,7 +65,7 @@ cd_fzf() {
         elif [ "$(tail -n 1 "$CD_HISTORY_PATH")" != "$target_path" ]; then
             # 既存のパスが含まれている場合は削除
             if grep -qFx "$target_path" "$CD_HISTORY_PATH"; then
-                if [ ! -n "$IS_OSX" ]; then
+                if [[ ! $IS_OSX -eq 1 ]]; then
                     sed -i "\|^$target_path\$|d" "$CD_HISTORY_PATH"
                 else
                     # BSD sed
