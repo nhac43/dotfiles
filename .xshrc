@@ -5,4 +5,9 @@ export XSHRC=$DOTFILES/.xshrc
 export TMUXCONF=$DOTFILES/.tmux.conf
 export DOTTOOLS=$DOTFILES/tools
 
+alias cd=cd_fzf
+export CD_HISTORY_LIMIT=500
+export CD_HISTORY_PATH=$HOME/.cd_history
+
+
 source $DOTTOOLS/loader.sh

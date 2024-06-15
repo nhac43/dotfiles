@@ -1,6 +1,3 @@
-export CD_HISTORY_LIMIT=100
-export CD_HISTORY_PATH=$HOME/.cd_history
-
 cat_reverse() {
     if which tac >/dev/null 2>&1; then
         tac $1
@@ -9,7 +6,12 @@ cat_reverse() {
     fi
 }
 
-cd() {
+cd_fzf() {
+
+    if [ ! -f "$CD_HISTORY_PATH" ]; then
+        builtin cd
+    fi
+
     if [ -z "$1" ] || [ "$1" = "-" ]; then
         # target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
         # target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
