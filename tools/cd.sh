@@ -13,31 +13,6 @@ cat_reverse() {
     fi
 }
 
-expand_path(){
-    # 標準入力から1行ずつ読み取る
-    while IFS= read -r line; do
-        # パスが空であればスキップ
-        if [[ -z "$line" ]]; then
-            continue
-        fi
-
-        # パスを '/' で分割して配列に格納
-        if [[ ! $IS_OSX -eq 1 ]]; then
-            IFS='/' read -ra ADDR <<< "$line"
-        else
-            IFS='/' read -rA ADDR <<< "$line"
-        fi
-        
-        # 配列を逆順にして展開して表示
-        for ((i=${#ADDR[@]}; i>=2; i--)); do
-            echo "${ADDR[@]:0:$i}" | tr ' ' '/'
-        done
-        if [ ! -z "${ADDR[0]}" ]; then
-            echo ${ADDR[0]}
-        fi
-    done
-}
-
 cd_fzf() {
 
     if [ ! -f "$CD_HISTORY_PATH" ]; then
@@ -47,12 +22,6 @@ cd_fzf() {
     if [ -z "$1" ] || [ "$1" = "-" ]; then
         # 最後の行はカレントディレクトリなため除く
         # 重複を除いた後にパスを展開、展開後の重複を再度除く
-        # ===============================================
-        # 1 直前のパス (cd -相当)
-        # 2...i 現在のパスの展開パス(現在のパスを除く)
-        # i+1...j 直前のパスの展開パス(直前のパスを除く)
-        # j+1... その他の履歴
-        # ===============================================
         # target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | expand_path | sed '1d' | { tail -n 2 $CD_HISTORY_PATH | head -n 1; cat -; } | awk '!seen[$0]++' | fzf)
         target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | sed '1d' | fzf)
         if [ ! -e "$target_path" ]; then
@@ -83,20 +52,6 @@ cd_fzf() {
                 IFS='/' read -rA ADDR <<< "$target_path"
             fi
 
-            # 配列を逆順にして展開して表示
-            # if [ ! -z "${ADDR[0]}" ]; then
-            #     new_line=${ADDR[0]}
-            #     # 既存のパスが含まれている場合は削除
-            #     if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
-            #         if [[ ! $IS_OSX -eq 1 ]]; then
-            #             sed -i "\|^$new_line\$|d" "$CD_HISTORY_PATH"
-            #         else
-            #             # BSD sed
-            #             sed -i "" "\|^$new_line\$|d" "$CD_HISTORY_PATH"
-            #         fi
-            #     fi
-            #     echo "$new_line" >> "$CD_HISTORY_PATH"
-            # fi
             for ((i=2; i<${#ADDR[@]}; i++)); do
                 new_line=$(echo "${ADDR[@]:0:$i}" | tr ' ' '/')
                 # 既存のパスが含まれている場合は削除
@@ -123,6 +78,16 @@ cd_fzf() {
             fi
             echo "$new_line" >> "$CD_HISTORY_PATH"
 
+            # 追記後の構成
+            # 末尾が0
+            # ===============================================
+            # 0 移動先のパス
+            # 1 移動前のパス (cd -相当)
+            # 2...i 移動先のパスの展開パス(移動先のパスを除く)
+            # i+1...j 移動前のパスの展開パス(移動前のパスを除く)
+            # j+1... その他の履歴
+            # ===============================================
+
         fi
         if [ -n "$CD_HISTORY_LIMIT" ]; then
             current_lines=$(wc -l < "$CD_HISTORY_PATH")
@@ -135,4 +100,30 @@ cd_fzf() {
     else
         builtin cd $1
     fi
+}
+
+
+expand_path(){
+    # 標準入力から1行ずつ読み取る
+    while IFS= read -r line; do
+        # パスが空であればスキップ
+        if [[ -z "$line" ]]; then
+            continue
+        fi
+
+        # パスを '/' で分割して配列に格納
+        if [[ ! $IS_OSX -eq 1 ]]; then
+            IFS='/' read -ra ADDR <<< "$line"
+        else
+            IFS='/' read -rA ADDR <<< "$line"
+        fi
+        
+        # 配列を逆順にして展開して表示
+        for ((i=${#ADDR[@]}; i>=2; i--)); do
+            echo "${ADDR[@]:0:$i}" | tr ' ' '/'
+        done
+        if [ ! -z "${ADDR[0]}" ]; then
+            echo ${ADDR[0]}
+        fi
+    done
 }
