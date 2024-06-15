@@ -1,8 +1,18 @@
 export CD_HISTORY_LIMIT=100
 export CD_HISTORY_PATH=$HOME/.cd_history
+
+cat_reverse() {
+    if which tac >/dev/null 2>&1; then
+        tac $1
+    else
+        tail -r $1
+    fi
+}
+
 cd() {
     if [ -z "$1" ] || [ "$1" = "-" ]; then
-        target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
+        # target_path=$(tail -r $CD_HISTORY_PATH | sed '1d' | fzf)
+        target_path=$(cat_reverse $CD_HISTORY_PATH | sed '1d' | fzf)
         if [ ! -e "$target_path" ]; then
             return
         fi
