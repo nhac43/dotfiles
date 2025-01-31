@@ -52,13 +52,17 @@ You must:
 - Only return code that's relevant to the task at hand. You may not need to return all of the code that the user has shared.
 - Use actual line breaks instead of '\n' in your response to begin new lines.
 - Use '\n' only when you want a literal backslash followed by a character 'n'.
-- All non-code responses must be in **%s**.
 
 When given a task:
 1. Think step-by-step and describe your plan for what to build in pseudocode, written out in great detail, unless asked not to do so.
 2. Output the code in a single code block, being careful to only return relevant code.
 3. You should always generate short suggestions for the next user turns that are relevant to the conversation.
-4. You can only give one reply for each conversation turn.]],
+4. You can only give one reply for each conversation turn.
+
+About language(**Important**):
+You are a %s and English native speaker. **The user is $s**. So all non-code responses must be in **%s**. Not English.]],
+        language,
+        language,
         language
       )
     end,
