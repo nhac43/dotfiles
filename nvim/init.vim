@@ -135,8 +135,11 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'sirver/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'tpope/vim-surround'
 
-" Plug 'tpope/vim-surround'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'olimorris/codecompanion.nvim'
+
 " Plug 'tpope/vim-fugitive'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
@@ -224,7 +227,6 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-
 "========================================================
 "                     Lua Settings
 "========================================================
@@ -232,3 +234,4 @@ lua require("lsp_config")
 lua require("nvim_cmp_config")
 lua require("keymaps")
 lua require("doge")
+lua require("codecompanion_config")
