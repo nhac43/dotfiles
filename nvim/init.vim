@@ -137,8 +137,9 @@ Plug 'sirver/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'tpope/vim-surround'
 
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'olimorris/codecompanion.nvim'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " Plug 'tpope/vim-fugitive'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -228,6 +229,11 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 "========================================================
+"                CodeCompanion Settings
+"========================================================
+nnoremap <leader><leader> <cmd>CodeCompanionChat<cr>
+
+"========================================================
 "                     Lua Settings
 "========================================================
 lua require("lsp_config")
@@ -235,3 +241,4 @@ lua require("nvim_cmp_config")
 lua require("keymaps")
 lua require("doge")
 lua require("codecompanion_config")
+lua require("render_markdown_config")
