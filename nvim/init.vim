@@ -49,9 +49,9 @@ nnoremap <C-k> :q<CR>
 " Memo
 function! CreateMemo()
     let title = input("Title (default: memo): ")
-    let ext = input("File extension (default: txt): ")
+    let ext = input("File extension (default: md): ")
     let title = empty(title) ? "memo" : title
-    let ext = empty(ext) ? "txt" : ext
+    let ext = empty(ext) ? "md" : ext
     execute "tabnew " . strftime("%Y%m%d_%H%M%S") . "_" . title . "." . ext
 endfunction
 nnoremap <Leader>m :call CreateMemo()<CR>
