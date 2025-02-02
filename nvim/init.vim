@@ -46,6 +46,16 @@ nnoremap <C-l> gt
 nnoremap <C-h> gT
 nnoremap <C-k> :q<CR>
 
+" Memo
+function! CreateMemo()
+    let title = input("Title (default: memo): ")
+    let ext = input("File extension (default: txt): ")
+    let title = empty(title) ? "memo" : title
+    let ext = empty(ext) ? "txt" : ext
+    execute "tabnew " . strftime("%Y%m%d_%H%M%S") . "_" . title . "." . ext
+endfunction
+nnoremap <Leader>m :call CreateMemo()<CR>
+
 " Copy mode toggle: Hide left column and indent line
 " let s:copy_mode = 0
 " function! CopyModeToggle()
