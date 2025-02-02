@@ -31,7 +31,8 @@ cd_fzf() {
         # 最後の行はカレントディレクトリなため除く
         # 重複を除いた後にパスを展開、展開後の重複を再度除く
         # target_path=$(cat_reverse $CD_HISTORY_PATH | awk '!seen[$0]++' | expand_path | sed '1d' | { tail -n 2 $CD_HISTORY_PATH | head -n 1; cat -; } | awk '!seen[$0]++' | fzf)
-        target_path=$(search_cd_history_without_current_dir)
+        # target_path=$(search_cd_history_without_current_dir)
+        target_path=$(search_cd_history)
         if [ ! -e "$target_path" ]; then
             return
         fi
