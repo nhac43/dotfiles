@@ -1,3 +1,4 @@
+local openai = require("codecompanion.adapters.openai")
 require("codecompanion").setup({
   adapters = {
     ollama = function()
@@ -6,6 +7,16 @@ require("codecompanion").setup({
           url = "http://127.0.0.1:8000", -- optional: default value is ollama url http://127.0.0.1:11434
           api_key = "EMPTY", -- optional: if your endpoint is authenticated
           chat_url = "/v1/chat/completions", -- optional: default value, override if different
+        },
+        -- https://github.com/olimorris/codecompanion.nvim/discussions/691
+        handlers = {
+          chat_output = function(self, data)
+            local result = openai.handlers.chat_output(self, data)
+            if result and result.output then
+              result.output.role = "assistant"
+            end
+            return result
+          end,
         },
       })
     end,
