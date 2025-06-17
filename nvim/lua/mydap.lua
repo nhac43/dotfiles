@@ -1,0 +1,18 @@
+local dap = require('dap')
+local dap_python = require('dap-python')
+
+-- Python インタプリタのパス（自分の環境に合わせて変更）
+dap_python.setup('~/.pyenv/versions/3.10.9/bin/python')
+
+-- キーバインド（必要に応じて）
+vim.keymap.set('n', '<F5>', dap.continue)
+vim.keymap.set('n', '<F10>', dap.step_over)
+vim.keymap.set('n', '<F11>', dap.step_into)
+vim.keymap.set('n', '<F12>', dap.step_out)
+vim.keymap.set('n', '<Leader>b', dap.toggle_breakpoint)
+vim.keymap.set('n', '<Leader>lp', function()
+  dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
+end)
+vim.keymap.set('n', '<Leader>dr', dap.repl.open)
+vim.keymap.set('n', '<Leader>dl', dap.run_last)
+

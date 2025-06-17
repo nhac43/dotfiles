@@ -147,6 +147,10 @@ Plug 'sirver/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'tpope/vim-surround'
 
+
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'olimorris/codecompanion.nvim'
 
@@ -251,3 +255,4 @@ lua require("keymaps")
 lua require("doge")
 lua require("codecompanion_config")
 lua require("treesitter")
+lua require('mydap')
