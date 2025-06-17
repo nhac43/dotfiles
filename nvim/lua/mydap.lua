@@ -1,5 +1,7 @@
+local venv = os.getenv('VIRTUAL_ENV')
+command = string.format('%s/bin/python', venv)
 local dap = require('dap')
-local dap_python = require('dap-python')
+local dap_python = require('dap-python').setup(command)
 
 -- キーバインド（必要に応じて）
 vim.keymap.set('n', '<F5>', dap.continue)
