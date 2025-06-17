@@ -1,9 +1,6 @@
 local dap = require('dap')
 local dap_python = require('dap-python')
 
--- Python インタプリタのパス（自分の環境に合わせて変更）
-dap_python.setup('~/.pyenv/versions/3.10.9/bin/python')
-
 -- キーバインド（必要に応じて）
 vim.keymap.set('n', '<F5>', dap.continue)
 vim.keymap.set('n', '<F10>', dap.step_over)
