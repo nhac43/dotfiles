@@ -21,10 +21,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- ファイルを開いたときに折り畳みを閉じる（任意）
-vim.api.nvim_create_autocmd("BufReadPost", {
-  pattern = "*.py",
+vim.api.nvim_create_autocmd({"FileType"}, {
+  pattern = { "json" },
   callback = function()
-    vim.cmd("normal zM")
-  end,
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+  end
 })
+
+-- -- ファイルを開いたときに折り畳みを閉じる（任意）
+-- vim.api.nvim_create_autocmd("BufReadPost", {
+--   pattern = "*.py",
+--   callback = function()
+--     vim.cmd("normal zM")
+--   end,
+-- })
