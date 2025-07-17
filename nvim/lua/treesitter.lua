@@ -18,6 +18,8 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
     vim.opt_local.foldlevel = 99  -- 開いた状態にする（必要なら 0 に）
+    vim.b.disable_autoindent = true
+    vim.b.indentexpr = ""
   end,
 })
 
