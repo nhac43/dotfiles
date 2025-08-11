@@ -9,3 +9,4 @@ source $DOTTOOLS/clipboard.sh
 source $DOTTOOLS/cd.sh
 source $DOTTOOLS/git.sh
 source $DOTTOOLS/ssh.sh
+source $DOTTOOLS/mise.sh

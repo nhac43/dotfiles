@@ -16,5 +16,5 @@ mkdir -p ~/.config/nvim
 ln -s $VIMRC ~/.vimrc
 ln -s $TMUXCONF ~/.tmux.conf
 # ln -s $DOTFILES/vim/UltiSnips ~/.vim/
-ln -s $DOTFILES/vim/UltiSnips ~/.config/nvim/
-ln -s $DOTFILES/nvim/init.vim ~/.config/nvim/
+# ln -s $DOTFILES/vim/UltiSnips ~/.config/nvim/
+ln -s $DOTFILES/nvim ~/.config/nvim/
