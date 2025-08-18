@@ -94,7 +94,6 @@ vim.keymap.set("n", "<leader><leader>", "<cmd>CodeCompanionChat<cr>")
 require("lsp_config")
 require("nvim_cmp_config")
 require("keymaps")
-require("doge")
 require("codecompanion_config")
 require("treesitter")
 require("mydap")
@@ -108,11 +107,6 @@ vim.g.UltiSnipsJumpForwardTrigger = "<c-b>"
 vim.g.UltiSnipsJumpBackwardTrigger = "<c-z>"
 vim.g.UltiSnipsEditSplit = "vertical"
 vim.g.ultisnips_python_style = "google"
-
--- ========================================================
--- docstring
--- ========================================================
-vim.g.doge_doc_standard_python = "google"
 
 -- ========================================================
 -- Colorscheme
