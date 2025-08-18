@@ -1,4 +1,20 @@
 -- ========================================================
+-- Nvim tree settings
+-- ========================================================
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
+-- ========================================================
+-- Python virtualenv path
+-- ========================================================
+vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
+vim.g.python_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
+
+-- ========================================================
 -- Basic Settings
 -- ========================================================
 vim.opt.encoding = "utf-8"
@@ -21,12 +37,6 @@ vim.g.mapleader = " "
 
 -- indentLine
 vim.g.indentLine_concealcursor = "nc"
-
--- ========================================================
--- Python virtualenv path
--- ========================================================
-vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
-vim.g.python_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
 
 -- ========================================================
 -- Keymaps
@@ -88,6 +98,7 @@ require("doge")
 require("codecompanion_config")
 require("treesitter")
 require("mydap")
+require("nvim_tree_config")
 
 -- ========================================================
 -- UltiSnips
