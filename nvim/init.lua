@@ -11,8 +11,12 @@ vim.opt.termguicolors = true
 -- ========================================================
 -- Python virtualenv path
 -- ========================================================
-vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
-vim.g.python_host_prog = os.getenv("HOME") .. "/nvims/python/.venv/bin/python"
+-- Install Python to "/nvims/python/venv/bin/python"
+-- And "pip install pynvim"
+
+-- DO NOT MOVE FOLLOWING PYTHON SETTINGS FROM THIS LOCATION
+vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
+vim.g.python_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
 
 -- ========================================================
 -- Basic Settings
