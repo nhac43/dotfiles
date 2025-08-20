@@ -103,6 +103,7 @@ require("codecompanion_config")
 require("treesitter")
 require("mydap")
 require("nvim_tree_config")
+require("clipboard_function")
 
 -- ========================================================
 -- UltiSnips
