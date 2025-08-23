@@ -47,13 +47,6 @@ cd_fzf() {
             echo "$target_path" >> "$CD_HISTORY_PATH"
         elif [ "$(tail -n 1 "$CD_HISTORY_PATH")" != "$target_path" ]; then
 
-            last_dir=$(tail -n 1 "$CD_HISTORY_PATH")
-            if [[ ! $IS_OSX -eq 1 ]]; then
-                sed -i -e '$d' "$CD_HISTORY_PATH"
-            else
-                sed -i '' -e '$d' "$CD_HISTORY_PATH"
-            fi
-
             # パスを '/' で分割して配列に格納
             if [[ ! $IS_OSX -eq 1 ]]; then
                 IFS='/' read -ra ADDR <<< "$target_path"
@@ -61,7 +54,7 @@ cd_fzf() {
                 IFS='/' read -rA ADDR <<< "$target_path"
             fi
 
-            for ((i=2; i<${#ADDR[@]}; i++)); do
+            for ((i=2; i<=${#ADDR[@]}; i++)); do
                 new_line=$(echo "${ADDR[@]:0:$i}" | tr ' ' '/')
                 # 既存のパスが含まれている場合は削除
                 if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
@@ -74,27 +67,15 @@ cd_fzf() {
                 fi
                 echo "$new_line" >> "$CD_HISTORY_PATH"
             done
-            echo "$last_dir" >> "$CD_HISTORY_PATH"
-            new_line=$(echo "${ADDR[@]:-1}" | tr ' ' '/')
-            # 既存のパスが含まれている場合は削除
-            if grep -qFx "$new_line" "$CD_HISTORY_PATH"; then
-                if [[ ! $IS_OSX -eq 1 ]]; then
-                    sed -i "\|^$new_line\$|d" "$CD_HISTORY_PATH"
-                else
-                    # BSD sed
-                    sed -i "" "\|^$new_line\$|d" "$CD_HISTORY_PATH"
-                fi
-            fi
-            echo "$new_line" >> "$CD_HISTORY_PATH"
 
             # 追記後の構成
             # 末尾が0
             # ===============================================
             # 0 移動先のパス
-            # 1 移動前のパス (cd -相当)
-            # 2...i 移動先のパスの展開パス(移動先のパスを除く)
-            # i+1...j 移動前のパスの展開パス(移動前のパスを除く)
-            # j+1... その他の履歴
+            # 1...i-1 移動先のパスの展開パス(移動先のパスを除く)
+            # i 移動前のパス (cd -相当)
+            # i...j-1 移動前のパスの展開パス(移動前のパスを除く)
+            # j... その他の履歴
             # ===============================================
 
         fi
