@@ -2,7 +2,6 @@ return {
   -- UI
   { "vim-airline/vim-airline" },
   { "Yggdroot/indentLine" },
-  { "airblade/vim-gitgutter" },
   {
     "rhysd/accelerated-jk",
     config = function()
@@ -18,8 +17,14 @@ return {
   -- Telescope
   {
     "nvim-telescope/telescope.nvim",
-    -- tag = "0.1.5",
-    dependencies = { "nvim-lua/plenary.nvim" }
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("telescope").setup()
+      local builtin = require("telescope.builtin")
+      vim.keymap.set("n", "<leader>gc", builtin.git_commits, {})
+      vim.keymap.set("n", "<leader>gb", builtin.git_branches, {})
+      vim.keymap.set("n", "<leader>gs", builtin.git_status, {})
+    end,
   },
 
   -- LSP + Mason
@@ -69,6 +74,66 @@ return {
   { "w0ng/vim-hybrid" },
   { "cocopon/iceberg.vim" },
   { "morhetz/gruvbox" },
+
+  -- GPT5で生成
+  -- Git signs
+  {
+    "lewis6991/gitsigns.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("gitsigns").setup({
+        signs = {
+          add = { text = "+" },
+          change = { text = "~" },
+          delete = { text = "_" },
+        },
+        on_attach = function(bufnr)
+          local gs = package.loaded.gitsigns
+          local map = function(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+          -- Hunk操作
+          map("n", "]c", function()
+            if vim.wo.diff then return "]c" end
+            vim.schedule(function() gs.next_hunk() end)
+            return "<Ignore>"
+          end, { expr = true })
+          map("n", "[c", function()
+            if vim.wo.diff then return "[c" end
+            vim.schedule(function() gs.prev_hunk() end)
+            return "<Ignore>"
+          end, { expr = true })
+          map("n", "<leader>hs", gs.stage_hunk)
+          map("n", "<leader>hr", gs.reset_hunk)
+        end
+      })
+    end,
+  },
+
+  -- Neogit
+  {
+    "TimUntersberger/neogit",
+    dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+    config = function()
+      require("neogit").setup({
+        integrations = { diffview = true },
+        disable_commit_confirmation = true,
+      })
+      vim.keymap.set("n", "<leader>gg", ":Neogit<CR>", { noremap = true, silent = true })
+    end,
+  },
+
+  -- Diffview
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>gq", ":DiffviewClose<CR>", { noremap = true, silent = true })
+    end,
+  },
 
   -- Optional / コメントアウト中のプラグイン
   -- { "tpope/vim-fugitive" },
