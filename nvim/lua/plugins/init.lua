@@ -72,6 +72,11 @@ return {
   { "cocopon/iceberg.vim" },
   { "morhetz/gruvbox" },
 
+  -- Copilot
+  { "github/copilot.vim" },
+  { "nvim-lua/plenary.nvim" },
+  { "CopilotC-Nvim/CopilotChat.nvim" },
+
   -- GPT5で生成
   -- Git signs
   {
