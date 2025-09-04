@@ -66,9 +66,6 @@ return {
     build = ":TSUpdate"
   },
 
-  -- CodeCompanion
-  { "olimorris/codecompanion.nvim" },
-
   -- Colorschemes
   { "tomasr/molokai" },
   { "w0ng/vim-hybrid" },

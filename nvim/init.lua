@@ -89,17 +89,11 @@ vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 
 -- ========================================================
--- CodeCompanion
--- ========================================================
-vim.keymap.set("n", "<leader><leader>", "<cmd>CodeCompanionChat<cr>")
-
--- ========================================================
 -- Plugin configs
 -- ========================================================
 require("lsp_config")
 require("nvim_cmp_config")
 require("keymaps")
-require("codecompanion_config")
 require("treesitter")
 require("mydap")
 require("nvim_tree_config")
