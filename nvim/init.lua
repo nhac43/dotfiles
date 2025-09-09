@@ -99,6 +99,7 @@ require("mydap")
 require("nvim_tree_config")
 require("clipboard_function")
 require("copilot_chat_config")
+require("codecompanion_config")
 
 -- ========================================================
 -- UltiSnips
