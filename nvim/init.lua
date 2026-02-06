@@ -56,21 +56,21 @@ if not is_vscode then
   vim.g.indentLine_concealcursor = "nc"
 end
 
-if vim.g.vscode then
+if is_vscode then
   -- find_files 相当
-  vim.keymap.set("n", "<leader>ff",
+  vim.keymap.set("n", "<Leader>ff",
     "<Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>")
 
   -- live_grep 相当
-  vim.keymap.set("n", "<leader>fg",
+  vim.keymap.set("n", "<Leader>fg",
     "<Cmd>call VSCodeNotify('workbench.action.findInFiles')<CR>")
 
   -- buffers 相当
-  vim.keymap.set("n", "<leader>fb",
+  vim.keymap.set("n", "<Leader>fb",
     "<Cmd>call VSCodeNotify('workbench.action.showAllEditors')<CR>")
 
   -- help_tags 相当（コマンドパレット）
-  vim.keymap.set("n", "<leader>fh",
+  vim.keymap.set("n", "<Leader>fh",
     "<Cmd>call VSCodeNotify('workbench.action.showCommands')<CR>")
 end
 
