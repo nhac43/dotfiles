@@ -1,26 +1,15 @@
--- ========================================================
--- Nvim tree settings
--- ========================================================
--- disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- init.lua
+local is_vscode = vim.g.vscode ~= nil
 
--- optionally enable 24-bit colour
-vim.opt.termguicolors = true
+-- =========================
+-- Core: VSCodeでも安全なもの
+-- =========================
 
--- ========================================================
--- Python virtualenv path
--- ========================================================
--- Install Python to "/nvims/python/venv/bin/python"
--- And "pip install pynvim"
-
--- DO NOT MOVE FOLLOWING PYTHON SETTINGS FROM THIS LOCATION
+-- Python host（VSCodeでも害は少ないが、不要ならvscode側で外してもOK）
 vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
-vim.g.python_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
+vim.g.python_host_prog  = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
 
--- ========================================================
--- Basic Settings
--- ========================================================
+-- Basic Settings（ここは共通でOK）
 vim.opt.encoding = "utf-8"
 vim.opt.number = true
 vim.opt.title = true
@@ -33,25 +22,18 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.relativenumber = true
-vim.opt.termguicolors = true -- set t_Co=256 の代わり
-
+vim.opt.termguicolors = true
 vim.cmd("syntax on")
-
 vim.g.mapleader = " "
 
--- indentLine
-vim.g.indentLine_concealcursor = "nc"
-
--- ========================================================
--- Keymaps
--- ========================================================
+-- Keymaps（編集系だけに寄せる：VSCodeでもOKなもの）
 vim.keymap.set("n", "<Esc><Esc>", ":nohl<CR>")
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 vim.keymap.set("n", "<C-l>", "gt")
 vim.keymap.set("n", "<C-h>", "gT")
 vim.keymap.set("n", "<C-k>", ":q<CR>")
 
--- Memo function (replaced with Lua version below)
+-- Memo function（VSCodeでも動くはず）
 vim.keymap.set("n", "<Leader>m", function()
   local title = vim.fn.input("Title (default: memo): ")
   local ext = vim.fn.input("File extension (default: md): ")
@@ -61,36 +43,63 @@ vim.keymap.set("n", "<Leader>m", function()
   vim.cmd("tabnew " .. filename)
 end)
 
--- Paste mode toggle
+-- Paste mode toggle（VSCodeでもOK）
 local paste_mode = false
 vim.keymap.set("n", "<Leader>l", function()
   paste_mode = not paste_mode
-  if paste_mode then
-    vim.opt.paste = true
-    print(":set paste")
-  else
-    vim.opt.paste = false
-    print(":set nopaste")
-  end
+  vim.opt.paste = paste_mode
+  print(paste_mode and ":set paste" or ":set nopaste")
 end)
 
--- ========================================================
--- Plugin Manager (vim-plug → lazy.nvimなどに変更推奨)
--- ========================================================
+-- indentLine は VSCodeでは基本いらないので、設定もVSCodeではしない
+if not is_vscode then
+  vim.g.indentLine_concealcursor = "nc"
+end
+
+if vim.g.vscode then
+  -- find_files 相当
+  vim.keymap.set("n", "<leader>ff",
+    "<Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>")
+
+  -- live_grep 相当
+  vim.keymap.set("n", "<leader>fg",
+    "<Cmd>call VSCodeNotify('workbench.action.findInFiles')<CR>")
+
+  -- buffers 相当
+  vim.keymap.set("n", "<leader>fb",
+    "<Cmd>call VSCodeNotify('workbench.action.showAllEditors')<CR>")
+
+  -- help_tags 相当（コマンドパレット）
+  vim.keymap.set("n", "<leader>fh",
+    "<Cmd>call VSCodeNotify('workbench.action.showCommands')<CR>")
+end
+
+-- =========================
+-- VSCode / Standalone 分岐
+-- =========================
+if is_vscode then
+  -- VSCodeではここで止める：重い plugin/config を読み込まない
+  return
+end
+
+-- =========================
+-- Standalone only: フルNeovim
+-- =========================
+
+-- nvim-tree のため（VSCodeでは不要なのでフル側だけ）
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- Plugin Manager
 require("config.lazy")
 
--- ========================================================
 -- Telescope
--- ========================================================
 require("telescope_custom_function")
--- vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 
--- ========================================================
 -- Plugin configs
--- ========================================================
 require("lsp_config")
 require("nvim_cmp_config")
 require("keymaps")
@@ -99,24 +108,18 @@ require("mydap")
 require("nvim_tree_config")
 require("clipboard_function")
 require("codecompanion_config")
--- require("copilot_chat_config")
 
--- ========================================================
 -- UltiSnips
--- ========================================================
 vim.g.UltiSnipsExpandTrigger = "<tab>"
 vim.g.UltiSnipsJumpForwardTrigger = "<c-b>"
 vim.g.UltiSnipsJumpBackwardTrigger = "<c-z>"
 vim.g.UltiSnipsEditSplit = "vertical"
 vim.g.ultisnips_python_style = "google"
 
--- ========================================================
--- Colorscheme
--- ========================================================
--- Gruvbox が読み込まれていればそれを使い、なければ fallback
+-- Colorscheme（VSCodeでは意味薄いのでフル側だけ）
 local ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
 if not ok then
   vim.cmd("colorscheme industry")
 end
-
 vim.opt.background = "dark"
+
