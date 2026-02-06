@@ -1,20 +1,17 @@
 return {
-  -- UI
+  -- [UI]
+
+  -- > Design
   { "vim-airline/vim-airline" },
   { "Yggdroot/indentLine" },
-  {
-    "rhysd/accelerated-jk",
-    config = function()
-      -- デフォルトで j/k を置き換える
-      vim.api.nvim_set_keymap("n", "j", "<Plug>(accelerated_jk_gj)", {})
-      vim.api.nvim_set_keymap("n", "k", "<Plug>(accelerated_jk_gk)", {})
-    end,
-  },
-  { "tpope/vim-commentary" },
-  { "tpope/vim-surround" },
-  { "cohama/lexima.vim" },
 
-  -- Telescope
+  -- > Colorschemes
+  { "tomasr/molokai" },
+  { "w0ng/vim-hybrid" },
+  { "cocopon/iceberg.vim" },
+  { "morhetz/gruvbox" },
+
+  -- > File operations
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -26,28 +23,6 @@ return {
       vim.keymap.set("n", "<leader>gs", builtin.git_status, {})
     end,
   },
-
-  -- LSP + Mason
-  { "williamboman/mason.nvim" },
-  { "williamboman/mason-lspconfig.nvim" },
-  { "neovim/nvim-lspconfig" },
-  { "onsails/lspkind.nvim" },
-  { "nvimtools/none-ls.nvim" },
-
-  -- Completion
-  { "hrsh7th/nvim-cmp" },
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-buffer" },
-  { "hrsh7th/cmp-path" },
-  { "hrsh7th/cmp-cmdline" },
-  { "sirver/ultisnips" },
-  { "quangnguyen30192/cmp-nvim-ultisnips" },
-
-  -- Debugging
-  { "mfussenegger/nvim-dap" },
-  { "mfussenegger/nvim-dap-python" },
-
-  -- File Explorer
   {
     "nvim-tree/nvim-tree.lua",
     version = "*",
@@ -60,25 +35,24 @@ return {
     end,
   },
 
-  -- Tree-sitter
+  -- > Usability
   {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate"
+    "rhysd/accelerated-jk",
+    config = function()
+      -- デフォルトで j/k を置き換える
+      vim.api.nvim_set_keymap("n", "j", "<Plug>(accelerated_jk_gj)", {})
+      vim.api.nvim_set_keymap("n", "k", "<Plug>(accelerated_jk_gk)", {})
+    end,
   },
 
-  -- Colorschemes
-  { "tomasr/molokai" },
-  { "w0ng/vim-hybrid" },
-  { "cocopon/iceberg.vim" },
-  { "morhetz/gruvbox" },
+  -- [Development]
 
-  -- Copilot
-  { "github/copilot.vim" },
-  { "nvim-lua/plenary.nvim" },
-  { "CopilotC-Nvim/CopilotChat.nvim" },
+  -- > Editing UX Enhancements
+  { "tpope/vim-commentary" },
+  { "tpope/vim-surround" },
+  { "cohama/lexima.vim" },
 
-  -- GPT5で生成
-  -- Git signs
+  -- > Git
   {
     "lewis6991/gitsigns.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -113,35 +87,59 @@ return {
       })
     end,
   },
-
-  -- Neogit
   {
-    "TimUntersberger/neogit",
+    "NeogitOrg/neogit",
     dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
     config = function()
       require("neogit").setup({
-        integrations = { diffview = true },
+        integrations = { diffview = true }, -- diffview連携を有効化
         disable_commit_confirmation = true,
       })
-      vim.keymap.set("n", "<leader>gg", ":Neogit<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<CR>", { silent = true })
     end,
   },
-
-  -- Diffview
   {
     "sindrets/diffview.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>", { noremap = true, silent = true })
-      vim.keymap.set("n", "<leader>gq", ":DiffviewClose<CR>", { noremap = true, silent = true })
+      -- 既存
+      vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>",  { silent = true })
+      vim.keymap.set("n", "<leader>gq", "<cmd>DiffviewClose<CR>", { silent = true })
+
+      -- 追加：今のファイルだけのdiff/履歴
+      vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { silent = true })
+      vim.keymap.set("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>",   { silent = true })
     end,
   },
 
+
+  -- > LSP
+  { "williamboman/mason.nvim" },
+  { "williamboman/mason-lspconfig.nvim" },
+  { "neovim/nvim-lspconfig" },
+  { "onsails/lspkind.nvim" },
+  { "nvimtools/none-ls.nvim" },
+
+  -- > Completion
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-path" },
+  { "hrsh7th/cmp-cmdline" },
+  { "sirver/ultisnips" },
+  { "quangnguyen30192/cmp-nvim-ultisnips" },
+
+  -- > Debugging
+  { "mfussenegger/nvim-dap" },
+  { "mfussenegger/nvim-dap-python" },
+
+  -- [AI Coding]
+
+  -- > AI Chat
   {
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
     },
     opts = {
       -- NOTE: The log_level is in `opts.opts`
@@ -151,9 +149,18 @@ return {
     },
   },
   
+  -- > AI Completion
   {
     'ggml-org/llama.vim',
   },
+
+  -- [Dependencies]
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate"
+  },
+
+
 
   -- Optional / コメントアウト中のプラグイン
   -- { "tpope/vim-fugitive" },
@@ -162,5 +169,9 @@ return {
   -- { "puremourning/vimspector" },
   -- { "junegunn/fzf", dir = "~/.fzf", build = "./install --all" },
   -- { "junegunn/fzf.vim" },
+  -- Copilot
+  -- { "github/copilot.vim" },
+  -- { "nvim-lua/plenary.nvim" },
+  -- { "CopilotC-Nvim/CopilotChat.nvim" },
 }
 
