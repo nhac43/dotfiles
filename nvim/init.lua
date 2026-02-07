@@ -5,10 +5,6 @@ local is_vscode = vim.g.vscode ~= nil
 -- Core: VSCodeでも安全なもの
 -- =========================
 
--- Python host（VSCodeでも害は少ないが、不要ならvscode側で外してもOK）
-vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
-vim.g.python_host_prog  = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
-
 -- Basic Settings（ここは共通でOK）
 vim.opt.encoding = "utf-8"
 vim.opt.number = true
@@ -108,6 +104,10 @@ end
 -- =========================
 -- Standalone only: フルNeovim
 -- =========================
+
+-- Python host（VSCodeでも害は少ないが、不要ならvscode側で外してもOK）
+vim.g.python3_host_prog = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
+vim.g.python_host_prog  = os.getenv("HOME") .. "/nvims/python/venv/bin/python"
 
 -- nvim-tree のため（VSCodeでは不要なのでフル側だけ）
 vim.g.loaded_netrw = 1
