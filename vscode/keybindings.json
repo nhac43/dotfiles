@@ -1,0 +1,23 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "ctrl+[",
+    "command": "workbench.action.closeQuickOpen",
+    "when": "inQuickOpen && !editorTextFocus"
+  },
+  {
+    "key": "ctrl+[",
+    "command": "closeFindWidget",
+    "when": "findWidgetVisible && !editorTextFocus"
+  },
+  {
+    "key": "ctrl+[",
+    "command": "hideSuggestWidget",
+    "when": "suggestWidgetVisible && !editorTextFocus"
+  },
+  {
+    "key": "ctrl+[",
+    "command": "closeParameterHints",
+    "when": "parameterHintsVisible && !editorTextFocus"
+  }
+]
