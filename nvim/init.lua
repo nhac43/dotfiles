@@ -25,9 +25,29 @@ vim.g.mapleader = " "
 -- Keymaps（編集系だけに寄せる：VSCodeでもOKなもの）
 vim.keymap.set("n", "<Esc><Esc>", ":nohl<CR>")
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
-vim.keymap.set("n", "<C-l>", "<Cmd>tabnext<CR>", { silent = true })
-vim.keymap.set("n", "<C-h>", "<Cmd>tabprevious<CR>", { silent = true })
-vim.keymap.set("n", "<C-k>", "<Cmd>quit<CR>", { silent = true })
+vim.keymap.set("n", "<C-l>", function()
+  if is_vscode then
+    vim.fn.VSCodeNotify("workbench.action.nextEditor")
+  else
+    vim.cmd("tabnext")
+  end
+end, { silent = true })
+
+vim.keymap.set("n", "<C-h>", function()
+  if is_vscode then
+    vim.fn.VSCodeNotify("workbench.action.previousEditor")
+  else
+    vim.cmd("tabprevious")
+  end
+end, { silent = true })
+
+vim.keymap.set("n", "<C-k>", function()
+  if is_vscode then
+    vim.fn.VSCodeNotify("workbench.action.closeActiveEditor")
+  else
+    vim.cmd("quit")
+  end
+end, { silent = true })
 
 -- Memo function（VSCodeでも動くはず）
 vim.keymap.set("n", "<Leader>m", function()
