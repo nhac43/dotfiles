@@ -53,6 +53,11 @@ if not is_vscode then
 end
 
 if is_vscode then
+
+  vim.keymap.set("n", "j", "gj", { noremap = true, silent = true })
+
+  vim.keymap.set("n", "k", "gk", { noremap = true, silent = true })
+
   -- find_files 相当
   vim.keymap.set("n", "<Leader>ff",
     "<Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>")
